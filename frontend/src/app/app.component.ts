@@ -1,5 +1,7 @@
-import { AfterViewInit, ElementRef, Component, ViewChild } from '@angular/core';
-import { Subject } from 'rxjs';
+import { AfterViewInit, Component } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
+
+import { PeerService } from './peer.service';
 
 @Component({
   selector: 'app-root',
@@ -7,12 +9,34 @@ import { Subject } from 'rxjs';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements AfterViewInit {
-  @ViewChild('video') video!: ElementRef;
+  stream$: BehaviorSubject<MediaStream> = new BehaviorSubject<
+    MediaStream | any
+  >(null);
 
-  stream$: Subject<MediaStream> = new Subject<MediaStream>();
+  remoteStream$: BehaviorSubject<MediaStream> = new BehaviorSubject<
+    MediaStream | any
+  >(null);
+
+  remotePeerId = '';
+
+  constructor(public peerService: PeerService) {}
 
   ngAfterViewInit(): void {
-    this.createUserMediaStream().then((stream) => this.stream$.next(stream));
+    this.createUserMediaStream().then((stream) => {
+      this.stream$.next(stream);
+    });
+
+    this.peerService.incomingСall$.subscribe((mediaConnection) => {
+      const isAccept = window.confirm('Incoming Call');
+
+      if (!isAccept) return;
+
+      mediaConnection.answer(this.stream$.getValue());
+
+      setTimeout(() => {
+        this.remoteStream$.next(mediaConnection.remoteStream);
+      }, 1500);
+    });
   }
 
   async createUserMediaStream(): Promise<MediaStream> {
@@ -22,5 +46,11 @@ export class AppComponent implements AfterViewInit {
     });
 
     return mediaStream;
+  }
+
+  call() {
+    this.peerService
+      .call(this.remotePeerId, this.stream$.getValue())
+      .then((stream) => this.remoteStream$.next(stream));
   }
 }
