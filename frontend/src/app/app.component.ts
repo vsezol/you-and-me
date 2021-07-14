@@ -1,5 +1,6 @@
-import { AfterViewInit, Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { MediaService } from './media.service';
 
 import { PeerService } from './peer.service';
 
@@ -8,21 +9,24 @@ import { PeerService } from './peer.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent implements AfterViewInit {
+export class AppComponent implements OnInit {
   stream$: BehaviorSubject<MediaStream> = new BehaviorSubject<
     MediaStream | any
   >(null);
-
+  
   remoteStream$: BehaviorSubject<MediaStream> = new BehaviorSubject<
     MediaStream | any
   >(null);
 
   remotePeerId = '';
 
-  constructor(public peerService: PeerService) {}
+  constructor(
+    public peerService: PeerService,
+    private mediaService: MediaService
+  ) {}
 
-  ngAfterViewInit(): void {
-    this.createUserMediaStream().then((stream) => {
+  ngOnInit(): void {
+    this.mediaService.createUserMediaStream().then((stream) => {
       this.stream$.next(stream);
     });
 
@@ -32,25 +36,23 @@ export class AppComponent implements AfterViewInit {
       if (!isAccept) return;
 
       mediaConnection.answer(this.stream$.getValue());
-
-      setTimeout(() => {
-        this.remoteStream$.next(mediaConnection.remoteStream);
-      }, 1500);
+      this.takeCall(mediaConnection);
     });
   }
 
-  async createUserMediaStream(): Promise<MediaStream> {
-    const mediaStream = await navigator.mediaDevices.getUserMedia({
-      audio: true,
-      video: true,
-    });
-
-    return mediaStream;
-  }
-
-  call() {
+  makeCall(): void {
     this.peerService
       .call(this.remotePeerId, this.stream$.getValue())
-      .then((stream) => this.remoteStream$.next(stream));
+      .then((stream) => this.takeCall({ remoteStream: stream }));
+  }
+
+  takeCall(connection: { remoteStream: MediaStream }): void {
+    setTimeout(() => {
+      if (!!connection?.remoteStream) {
+        this.remoteStream$.next(connection.remoteStream);
+      } else {
+        this.takeCall(connection);
+      }
+    }, 100);
   }
 }

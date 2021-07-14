@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
-import Peer from 'peerjs';
+import Peer, { MediaConnection } from 'peerjs';
+
+interface MediaConnectionWithRemoteStream extends MediaConnection {
+  remoteStream: MediaStream;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -9,25 +13,28 @@ import Peer from 'peerjs';
 export class PeerService {
   private peer: Peer;
 
-  incomingСall$: Subject<any> = new Subject<any>();
+  public incomingСall$: Subject<MediaConnectionWithRemoteStream> =
+    new Subject<MediaConnectionWithRemoteStream>();
 
-  peerId$: Subject<string> = new Subject<string>();
+  public peerId = '';
 
   constructor() {
-
     this.peer = new Peer({
       config: {
-        iceServers: [
-          { urls: 'stun:stun.l.google.com:19302' },
-        ],
+        iceServers: [{ urls: 'stun:stun.l.google.com:19302' }],
       },
     });
 
-    this.peer.on('open', (peerId: string) => this.peerId$.next(peerId));
+    this.peer.on('open', (peerId: string) => {
+      this.peerId = peerId;
+    });
 
     this.peer.on('call', (connection: any) => {
-      console.log(connection);
       this.incomingСall$.next(connection);
+    });
+
+    this.peer.on('error', (error: Error) => {
+      console.log('[ERROR] in peer', error);
     });
   }
 

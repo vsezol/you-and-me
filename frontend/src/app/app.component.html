@@ -1,4 +1,4 @@
-<h1>Your id: {{ peerService.peerId$ | async }}</h1>
+<h1>Your id: {{ peerService.peerId }}</h1>
 
 <div>
   <app-video [stream$]="stream$"></app-video>
@@ -7,4 +7,4 @@
 
 <br />
 <input type="text" [(ngModel)]="remotePeerId" />
-<button (click)="call()">Call</button>
+<button (click)="makeCall()">Call</button>
