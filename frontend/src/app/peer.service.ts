@@ -1,29 +1,27 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 
-import * as PeerObject from 'peerjs';
-//@ts-ignore
-const peerObject: {
-  peerjs: {
-    Peer: {
-      new (): PeerObject;
-    };
-  };
-} = PeerObject;
-const Peer = peerObject.peerjs.Peer;
+import Peer from 'peerjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PeerService {
-  private peer: PeerObject;
+  private peer: Peer;
 
   incomingСall$: Subject<any> = new Subject<any>();
 
   peerId$: Subject<string> = new Subject<string>();
 
   constructor() {
-    this.peer = new Peer();
+
+    this.peer = new Peer({
+      config: {
+        iceServers: [
+          { urls: 'stun:stun.l.google.com:19302' },
+        ],
+      },
+    });
 
     this.peer.on('open', (peerId: string) => this.peerId$.next(peerId));
 

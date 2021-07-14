@@ -33,7 +33,7 @@ export class VideoComponent implements AfterViewInit, OnDestroy {
   }
 
   addStreamToVideoElement(stream: MediaStream): void {
-    // this.video.nativeElement.muted = true;
+    this.video.nativeElement.muted = true;
     this.video.nativeElement.srcObject = stream;
   }
 
