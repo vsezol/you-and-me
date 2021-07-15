@@ -1,10 +1,1 @@
-<h1>Your id: {{ peerService.peerId }}</h1>
-
-<div>
-  <app-video [stream$]="stream$"></app-video>
-  <app-video [stream$]="remoteStream$"></app-video>
-</div>
-
-<br />
-<input type="text" [(ngModel)]="remotePeerId" />
-<button (click)="makeCall()">Call</button>
+<router-outlet></router-outlet>
