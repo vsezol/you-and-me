@@ -1,6 +1,6 @@
 @import '~@angular/material/theming';
 
-$bg-color: mat-color(mat-palette($mat-blue-grey, 400));
+$bg-color: mat-color(mat-palette($mat-blue-grey, 900));
 
 .container {
   background-color: $bg-color;
