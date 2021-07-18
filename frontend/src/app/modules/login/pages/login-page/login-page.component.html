@@ -1,11 +1,15 @@
-<app-main-grid>
+<app-main-grid withDivider>
   <div first class="centered">
     <form class="example-form">
-      <mat-form-field appearance="fill">
+      <mat-form-field appearance="outline" class="centered__item">
         <mat-label>Join the chat</mat-label>
         <input matInput placeholder="Insert chat id" />
       </mat-form-field>
     </form>
   </div>
-  <div second class="centered"></div>
+  <div second class="centered">
+    <button mat-raised-button color="primary" class="centered__item">
+      Create a chat
+    </button>
+  </div>
 </app-main-grid>

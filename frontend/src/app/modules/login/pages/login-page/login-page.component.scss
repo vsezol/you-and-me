@@ -1,5 +1,12 @@
 .centered {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &__item {
+    width: 200px;
+    height: 63px;
+  }
 }

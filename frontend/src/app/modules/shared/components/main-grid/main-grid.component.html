@@ -1,4 +1,5 @@
-<div class="main-grid">
-  <ng-content select="[first]"></ng-content>
-  <ng-content select="[second]"></ng-content>
+<div class="main-flex" fxFlex fxLayout="row" fxLayout.xs="column">
+  <ng-content fxFlex select="[first]"></ng-content>
+  <mat-divider *ngIf="withDivider" fxFlex [vertical]="isSmallAndUp | async"></mat-divider>
+  <ng-content fxFlex select="[second]"></ng-content>
 </div>
