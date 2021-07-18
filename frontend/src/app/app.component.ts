@@ -15,7 +15,7 @@ enum ThemeClassNames {
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-  private isDarkMode = false;
+  public isDarkMode = false;
 
   get themeMode() {
     return this.isDarkMode ? ThemeClassNames.DARK : ThemeClassNames.LIGHT;
@@ -30,8 +30,8 @@ export class AppComponent implements OnInit {
     this.setThemeModeToDocument();
   }
 
-  onDarkModeSwitched({ checked }: MatSlideToggleChange): void {
-    this.isDarkMode = checked;
+  onToggleTheme(): void {
+    this.isDarkMode = !this.isDarkMode;
     this.setThemeModeToDocument();
   }
 

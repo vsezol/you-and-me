@@ -1,9 +1,5 @@
-@import '~@angular/material/theming';
-
-$bg-color: mat-color(mat-palette($mat-blue-grey, 900));
-
 .container {
-  background-color: $bg-color;
+  background-color: var(--bg-color);
   width: 100vw;
   height: 100vh;
   display: flex;

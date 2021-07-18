@@ -1,4 +1,7 @@
-<mat-slide-toggle class="theme-switcher" (change)="onDarkModeSwitched($event)">
-  dark mode
-</mat-slide-toggle>
+<app-theme-switcher
+  class="theme-switcher"
+  [isDark]="isDarkMode"
+  (toggle)="onToggleTheme()"
+></app-theme-switcher>
+
 <router-outlet></router-outlet>
