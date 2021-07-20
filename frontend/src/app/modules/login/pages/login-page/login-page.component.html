@@ -1,1 +1,23 @@
-<p>login-page works!</p>
+<app-logo></app-logo>
+
+<app-main-grid withDivider>
+  <div first class="centered">
+    <form class="example-form">
+      <mat-form-field appearance="fill" class="centered__item">
+        <mat-label>Join the chat</mat-label>
+        <input matInput placeholder="Insert chat id" />
+      </mat-form-field>
+    </form>
+  </div>
+  <div second class="centered">
+    <button
+      mat-flat-button
+      color="primary"
+      class="centered__item mat-h1"
+      (click)="handleCreateChat()"
+      [disabled]="!(isCreateAvailable$ | async)"
+    >
+      Create a chat
+    </button>
+  </div>
+</app-main-grid>
