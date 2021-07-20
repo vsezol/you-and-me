@@ -6,10 +6,11 @@ import { LayoutModule } from '@angular/cdk/layout';
 import { MatDividerModule } from '@angular/material/divider';
 
 import { MainGridComponent } from './components/main-grid/main-grid.component';
+import { LogoComponent } from './components/logo/logo.component';
 
 @NgModule({
-  declarations: [MainGridComponent],
-  exports: [MainGridComponent],
+  declarations: [MainGridComponent, LogoComponent],
+  exports: [MainGridComponent, LogoComponent],
   imports: [CommonModule, FlexLayoutModule, MatDividerModule, LayoutModule],
 })
 export class SharedModule {}

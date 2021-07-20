@@ -1,12 +1,8 @@
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
-import {
-  BreakpointObserver,
-  Breakpoints,
-  BreakpointState,
-} from '@angular/cdk/layout';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-main-grid',
@@ -25,11 +21,11 @@ export class MainGridComponent implements OnInit {
 
   constructor(private breakpointObserver: BreakpointObserver) {}
 
-  public isSmallAndUp!: Observable<boolean>;
+  public isMdAndUp!: Observable<boolean>;
 
   ngOnInit(): void {
-    this.isSmallAndUp = this.breakpointObserver
-      .observe([Breakpoints.XSmall])
+    this.isMdAndUp = this.breakpointObserver
+      .observe([Breakpoints.XSmall, Breakpoints.Small])
       .pipe(map((result) => !result.matches));
   }
 }
