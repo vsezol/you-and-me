@@ -1,4 +1,4 @@
-<h1>Your id: {{ peerService.peerId }}</h1>
+<h1>Your id: {{ peerService.peerId$ | async }}</h1>
 
 <div>
   <app-video [stream$]="stream$"></app-video>

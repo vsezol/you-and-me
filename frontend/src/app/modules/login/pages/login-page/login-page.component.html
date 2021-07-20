@@ -10,7 +10,13 @@
     </form>
   </div>
   <div second class="centered">
-    <button mat-flat-button color="primary" class="centered__item mat-h1">
+    <button
+      mat-flat-button
+      color="primary"
+      class="centered__item mat-h1"
+      (click)="handleCreateChat()"
+      [disabled]="!(isCreateAvailable$ | async)"
+    >
       Create a chat
     </button>
   </div>

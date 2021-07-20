@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 
 import Peer, { MediaConnection } from 'peerjs';
 
@@ -7,16 +7,14 @@ interface MediaConnectionWithRemoteStream extends MediaConnection {
   remoteStream: MediaStream;
 }
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class PeerService {
   private peer: Peer;
 
   public incomingСall$: Subject<MediaConnectionWithRemoteStream> =
     new Subject<MediaConnectionWithRemoteStream>();
 
-  public peerId = '';
+  public peerId$: BehaviorSubject<string> = new BehaviorSubject<string>('');
 
   constructor() {
     this.peer = new Peer({
@@ -26,7 +24,7 @@ export class PeerService {
     });
 
     this.peer.on('open', (peerId: string) => {
-      this.peerId = peerId;
+      this.peerId$.next(peerId);
     });
 
     this.peer.on('call', (connection: any) => {

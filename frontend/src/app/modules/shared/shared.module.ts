@@ -7,10 +7,17 @@ import { MatDividerModule } from '@angular/material/divider';
 
 import { MainGridComponent } from './components/main-grid/main-grid.component';
 import { LogoComponent } from './components/logo/logo.component';
+import { PeerModule } from '../peer/peer.module';
 
 @NgModule({
   declarations: [MainGridComponent, LogoComponent],
-  exports: [MainGridComponent, LogoComponent],
-  imports: [CommonModule, FlexLayoutModule, MatDividerModule, LayoutModule],
+  imports: [
+    CommonModule,
+    FlexLayoutModule,
+    MatDividerModule,
+    LayoutModule,
+    PeerModule,
+  ],
+  exports: [MainGridComponent, LogoComponent, PeerModule],
 })
 export class SharedModule {}
