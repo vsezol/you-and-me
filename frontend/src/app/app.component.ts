@@ -2,7 +2,6 @@ import { DOCUMENT } from '@angular/common';
 import { Renderer2 } from '@angular/core';
 import { Inject, OnInit } from '@angular/core';
 import { Component } from '@angular/core';
-import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 
 enum ThemeClassNames {
   LIGHT = 'theme_light',

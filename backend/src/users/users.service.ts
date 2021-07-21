@@ -25,6 +25,11 @@ export class UsersService {
       username: 'maria',
       password: 'guess',
     },
+    {
+      userId: 3,
+      username: 'vsezol',
+      password: '123456',
+    },
   ];
 
   async findOne(username: string): Promise<UserInDB | undefined> {
