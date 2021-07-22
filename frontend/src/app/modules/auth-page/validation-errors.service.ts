@@ -11,7 +11,9 @@ export class ValidationErrorsService<T extends string> {
 
   public getRequiredErrorMessage(formGroup: FormGroup, controlName: T): string {
     if (formGroup.get(controlName)?.errors?.required) {
-      return `Field (${controlName}) is required`;
+      return `${
+        controlName.charAt(0).toUpperCase() + controlName.slice(1)
+      } is required`;
     } else {
       return '';
     }
