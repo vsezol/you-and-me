@@ -1,38 +1,27 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, Input } from '@angular/core';
+import { Router } from '@angular/router';
 
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { BehaviorSubject } from 'rxjs';
 
 import { AuthTypeNames } from '../../auth-page-routing.module';
+import { AuthInfo } from '../../views/auth-page/auth-page.component';
 
 @Component({
   selector: 'app-auth-switcher',
   templateUrl: './auth-switcher.component.html',
   styleUrls: ['./auth-switcher.component.scss'],
 })
-export class AuthSwitcherComponent implements OnInit, OnDestroy {
-  constructor(private router: Router, private route: ActivatedRoute) {}
+export class AuthSwitcherComponent {
+  constructor(private router: Router) {}
 
-  destroyed$: Subject<void> = new Subject<void>();
-
-  isSignInForm = false;
-
-  ngOnInit(): void {
-    this.route.params.pipe(takeUntil(this.destroyed$)).subscribe((params) => {
-      this.isSignInForm = params.authType === AuthTypeNames.SIGN_IN;
-    });
-  }
-
-  ngOnDestroy(): void {
-    this.destroyed$.next();
-    this.destroyed$.complete();
-  }
+  @Input() authInfo$!: BehaviorSubject<AuthInfo>;
 
   handleSwitchAuthType(): void {
     this.router.navigate([
       'auth',
-      this.isSignInForm ? AuthTypeNames.SIGN_UP : AuthTypeNames.SIGN_IN,
+      this.authInfo$.getValue().isSignIn
+        ? AuthTypeNames.SIGN_UP
+        : AuthTypeNames.SIGN_IN,
     ]);
   }
 }

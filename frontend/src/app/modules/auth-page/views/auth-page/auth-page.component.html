@@ -1,4 +1,7 @@
 <div class="auth-page">
+  <h1 class="mat-h2">
+    {{ authInfo$.getValue().isSignIn ? 'Authorization' : 'Registration' }}
+  </h1>
   <form
     class="auth-page__form"
     [formGroup]="formGroup"
@@ -49,9 +52,9 @@
       class="auth-page__btn"
       [disabled]="formGroup.invalid"
     >
-      Log in
+      {{ authInfo$.getValue().isSignIn ? 'Sign in' : 'Sign up' }}
     </button>
   </form>
 
-  <app-auth-switcher></app-auth-switcher>
+  <app-auth-switcher [authInfo$]="authInfo$"></app-auth-switcher>
 </div>

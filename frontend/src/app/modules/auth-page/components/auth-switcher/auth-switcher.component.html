@@ -1,10 +1,14 @@
 <div fxLayout="row" fxLayoutAlign="center center">
   <div fxFlex="80">
-    {{ isSignInForm ? 'Not registered yet?' : 'Already Registered?' }}
+    {{
+      authInfo$.getValue()?.isSignIn
+        ? 'Not registered yet?'
+        : 'Already Registered?'
+    }}
   </div>
   <div fxFlex style="margin-left: 10px">
     <button mat-button color="primary" (click)="handleSwitchAuthType()">
-      {{ isSignInForm ? 'Sing up' : 'Sign in' }}
+      {{ authInfo$.getValue()?.isSignIn ? 'Sing up' : 'Sign in' }}
     </button>
   </div>
 </div>

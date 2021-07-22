@@ -28,7 +28,7 @@ export class AuthService {
     return this.fetchJWTToken('register', user);
   }
 
-  login(user: User) {
+  login(user: User): Observable<string> {
     return this.fetchJWTToken('login', user);
   }
 
