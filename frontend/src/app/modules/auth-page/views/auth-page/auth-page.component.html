@@ -1,17 +1,28 @@
 <div class="auth-page">
-  <form class="auth-page__form">
-    <mat-form-field appearance="fill" class="auth-page__input">
+  <form class="auth-page__form" [formGroup]="formGroup">
+    <mat-form-field appearance="outline" class="auth-page__input">
       <mat-label>Username</mat-label>
-      <input matInput placeholder="Enter your username" />
+      <input
+        matInput
+        placeholder="Enter your username"
+        formControlName="username"
+      />
+      <mat-error *ngIf="formGroup.get(controlNames.USERNAME)?.invalid">
+        {{ errorMessages?.username }}
+      </mat-error>
     </mat-form-field>
 
-    <mat-form-field appearance="fill" class="auth-page__input">
+    <mat-form-field appearance="outline" class="auth-page__input">
       <mat-label>Password</mat-label>
       <input
         matInput
         placeholder="Enter your password"
-        [type]="isPasswordVisible ? 'password' : 'text'"
+        [type]="isPasswordVisible ? 'text' : 'password'"
+        formControlName="password"
       />
+      <mat-error *ngIf="formGroup.get(controlNames.PASSWORD)?.invalid">
+        {{ errorMessages?.password }}
+      </mat-error>
       <button
         type="button"
         mat-icon-button
@@ -21,7 +32,7 @@
         [attr.aria-pressed]="isPasswordVisible"
       >
         <mat-icon>
-          {{ isPasswordVisible ? 'visibility_off' : 'visibility' }}
+          {{ isPasswordVisible ? 'visibility' : 'visibility_off' }}
         </mat-icon>
       </button>
     </mat-form-field>
