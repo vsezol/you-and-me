@@ -16,8 +16,8 @@ import { SharedModule } from '../shared/shared.module';
     LoginRoutingModule,
     MatFormFieldModule,
     MatInputModule,
-    SharedModule,
     MatButtonModule,
+    SharedModule,
   ],
 })
 export class LoginModule {}
