@@ -1,6 +1,5 @@
-import { DOCUMENT } from '@angular/common';
-import { Inject, OnInit } from '@angular/core';
 import { Component } from '@angular/core';
+import { DynamicStyleLoadingService } from './services/dynamic-style-loading.service';
 
 enum ThemeBundleNames {
   LIGHT = 'light-theme',
@@ -12,14 +11,14 @@ enum ThemeBundleNames {
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent implements OnInit {
-  public isDarkMode = false;
+export class AppComponent {
+  public isDarkMode = true;
 
   get themeBundleName() {
     return this.isDarkMode ? ThemeBundleNames.DARK : ThemeBundleNames.LIGHT;
   }
 
-  constructor(@Inject(DOCUMENT) private document: Document) {}
+  constructor(private dynamicStyleLoadingService: DynamicStyleLoadingService) {}
 
   ngOnInit(): void {
     this.setThemeModeToDocument();
@@ -31,34 +30,9 @@ export class AppComponent implements OnInit {
   }
 
   setThemeModeToDocument(): void {
-    this.loadStyle(this.themeBundleName, 'dynamic-theme-style');
-  }
-
-  private loadStyle(styleBundleName: string, elementId = 'dynamic-style') {
-    const styleBundlePath = `${styleBundleName}.css`;
-
-    let themeLinkElement = this.document.getElementById(
-      elementId
-    ) as HTMLLinkElement;
-
-    if (!themeLinkElement) {
-      themeLinkElement = this.createLinkStyleElement(elementId);
-      this.appendElementToHead(themeLinkElement);
-    }
-
-    themeLinkElement.href = styleBundlePath;
-  }
-
-  private createLinkStyleElement(elementId: string) {
-    const linkElement = this.document.createElement('link');
-    linkElement.id = elementId;
-    linkElement.rel = 'stylesheet';
-
-    return linkElement;
-  }
-
-  private appendElementToHead(element: HTMLElement) {
-    const head = this.document.getElementsByTagName('head')[0];
-    head.appendChild(element);
+    this.dynamicStyleLoadingService.loadStyle(
+      this.themeBundleName,
+      'dynamic-theme-style'
+    );
   }
 }
