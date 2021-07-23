@@ -1,8 +1,13 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
-import { HttpClient } from '@angular/common/http';
-import { map, tap } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { catchError, map, tap } from 'rxjs/operators';
+import { Observable, throwError } from 'rxjs';
+
+import {
+  SomethingWentWrongError,
+  UnauthorizedError,
+} from '../../common/errors';
 
 export interface User {
   username: string;
@@ -24,12 +29,29 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
-  register(user: User): Observable<string> {
-    return this.fetchJWTToken('register', user);
+  signUp(user: User): Observable<string> {
+    return this.fetchJWTToken('register', user).pipe(
+      catchError((err: HttpErrorResponse) => {
+        console.log('signUp', err);
+        return throwError(new SomethingWentWrongError({ status: err.status }));
+      })
+    );
   }
 
-  login(user: User): Observable<string> {
-    return this.fetchJWTToken('login', user);
+  signIn(user: User): Observable<string> {
+    return this.fetchJWTToken('login', user).pipe(
+      catchError((err: HttpErrorResponse) => {
+        switch (err.status) {
+          case 401:
+            return throwError(new UnauthorizedError());
+          default:
+            console.log('signIn', err);
+            return throwError(
+              new SomethingWentWrongError({ status: err.status })
+            );
+        }
+      })
+    );
   }
 
   private fetchJWTToken(url: string, user: User): Observable<string> {

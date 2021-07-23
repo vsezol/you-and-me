@@ -27,7 +27,20 @@
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": ["src/favicon.ico", "src/assets"],
-            "styles": ["src/styles.scss"],
+            "extractCss": true,
+            "styles": [
+              "src/styles/index.scss",
+              {
+                "input": "src/styles/theme/light-theme.scss",
+                "bundleName": "light-theme",
+                "inject": false
+              },
+              {
+                "input": "src/styles/theme/dark-theme.scss",
+                "bundleName": "dark-theme",
+                "inject": false
+              }
+            ],
             "scripts": []
           },
           "configurations": {
@@ -90,7 +103,10 @@
             "karmaConfig": "karma.conf.js",
             "inlineStyleLanguage": "scss",
             "assets": ["src/favicon.ico", "src/assets"],
-            "styles": ["src/styles.scss"],
+            "styles": [
+              "src/styles/index.scss",
+              "src/styles/theme/dark-theme.scss"
+            ],
             "scripts": []
           }
         }

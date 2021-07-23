@@ -5,13 +5,15 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from 'src/app/modules/auth/auth.service';
-import { ValidationErrorsService } from '../../validation-errors.service';
-import { map, takeUntil } from 'rxjs/operators';
-import { AuthTypeNames } from '../../auth-page-routing.module';
 import { ActivatedRoute } from '@angular/router';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+
+import { map, takeUntil } from 'rxjs/operators';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
+
+import { AuthService, User } from 'src/app/modules/auth/auth.service';
+import { ValidationErrorsService } from '../../validation-errors.service';
+import { AuthTypeNames } from '../../auth-page-routing.module';
 
 enum ControlNames {
   USERNAME = 'username',
@@ -41,6 +43,8 @@ export class AuthPageComponent implements OnInit, OnDestroy {
   formGroup!: FormGroup;
 
   destroyed$: Subject<void> = new Subject<void>();
+
+  error: Error | null = null;
 
   authInfo$: BehaviorSubject<AuthInfo> = new BehaviorSubject<AuthInfo>({
     isSignUp: false,
@@ -81,14 +85,29 @@ export class AuthPageComponent implements OnInit, OnDestroy {
 
   public handleSubmit() {
     if (this.formGroup.valid) {
-      this.authService
-        .login({
-          username: this.formGroup.value.username,
-          password: this.formGroup.value.password,
-        })
-        .subscribe((response) => {
+      const user: User = {
+        username: this.formGroup.value.username,
+        password: this.formGroup.value.password,
+      };
+
+      let auth$: Observable<string>;
+
+      if (this.authInfo$.getValue().isSignIn) {
+        auth$ = this.authService.signIn(user);
+      } else {
+        auth$ = this.authService.signUp(user);
+      }
+
+      auth$.subscribe(
+        () => {
           this.formElement.nativeElement.reset();
-        });
+          this.error = null;
+        },
+        (error: Error) => {
+          this.error = error;
+          console.log('submit', error);
+        }
+      );
     }
   }
 
