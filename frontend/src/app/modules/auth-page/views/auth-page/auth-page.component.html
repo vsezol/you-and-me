@@ -3,11 +3,8 @@
     {{ authInfo$.getValue().isSignIn ? 'Authorization' : 'Registration' }}
   </h1>
 
-  <mat-card *ngIf="!!error">
-    <mat-card-header>
-      <mat-card-title class="mat-accent">{{ error.message }}</mat-card-title>
-    </mat-card-header>
-  </mat-card>
+  <app-alert *ngIf="!!error" [message]="error.message" color="warn"></app-alert>
+
   <form
     class="auth-page__form"
     [formGroup]="formGroup"

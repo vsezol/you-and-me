@@ -17,9 +17,10 @@ import { AuthPageComponent } from './views/auth-page/auth-page.component';
 import { ValidationErrorsService } from './validation-errors.service';
 import { AuthModule } from '../auth/auth.module';
 import { AuthSwitcherComponent } from './components/auth-switcher/auth-switcher.component';
+import { AlertComponent } from './components/alert/alert.component';
 
 @NgModule({
-  declarations: [AuthPageComponent, AuthSwitcherComponent],
+  declarations: [AuthPageComponent, AuthSwitcherComponent, AlertComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
