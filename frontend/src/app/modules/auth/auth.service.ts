@@ -62,11 +62,9 @@ export class AuthService {
         tap(
           (token) => {
             this.setJWTToken(token);
-            console.log(this.jwtToken);
           },
           () => {
             this.setJWTToken('');
-            console.log(this.jwtToken);
           }
         )
       );
