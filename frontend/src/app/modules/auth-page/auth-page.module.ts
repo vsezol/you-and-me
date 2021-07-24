@@ -9,6 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { SharedModule } from '../shared/shared.module';
 import { AuthPageRoutingModule } from './auth-page-routing.module';
@@ -34,6 +35,7 @@ import { AlertComponent } from './components/alert/alert.component';
     MatButtonModule,
     MatIconModule,
     MatCardModule,
+    MatProgressSpinnerModule,
 
     AuthPageRoutingModule,
     SharedModule,

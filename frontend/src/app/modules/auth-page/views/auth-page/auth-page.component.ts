@@ -1,3 +1,6 @@
+import { map, takeUntil, tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
+
 import {
   Component,
   ElementRef,
@@ -7,9 +10,6 @@ import {
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-
-import { map, takeUntil } from 'rxjs/operators';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
 import { AuthService, User } from 'src/app/modules/auth/auth.service';
 import { ValidationErrorsService } from '../../validation-errors.service';
@@ -35,6 +35,8 @@ type ErrorMessages = Record<ControlNames, string>;
 })
 export class AuthPageComponent implements OnInit, OnDestroy {
   @ViewChild('formElement') formElement!: ElementRef;
+
+  isLoading = false;
 
   isPasswordVisible = false;
 
@@ -98,14 +100,18 @@ export class AuthPageComponent implements OnInit, OnDestroy {
         auth$ = this.authService.signUp(user);
       }
 
+      this.isLoading = true;
+
       auth$.subscribe(
         () => {
           this.formElement.nativeElement.reset();
           this.error = null;
+          this.isLoading = false;
         },
         (error: Error) => {
-          this.error = error;
           console.log('submit', error);
+          this.error = error;
+          this.isLoading = false;
         }
       );
     }
@@ -135,5 +141,9 @@ export class AuthPageComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroyed$.next();
     this.destroyed$.complete();
+  }
+
+  handleCloseAlert(): void {
+    this.error = null;
   }
 }

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, EventEmitter, Output } from '@angular/core';
 
 type Colors = 'primary' | 'accent' | 'warn';
 
@@ -10,4 +10,6 @@ type Colors = 'primary' | 'accent' | 'warn';
 export class AlertComponent {
   @Input() message!: string;
   @Input() color: Colors = 'primary';
+
+  @Output() onClose: EventEmitter<void> = new EventEmitter<void>();
 }

@@ -1,3 +1,14 @@
 <mat-card [class]="'alert_' + color">
-  <mat-card-title>{{ message }}</mat-card-title>
+  <div>
+    {{ message }}
+  </div>
+  <div>
+    <button
+      mat-icon-button
+      disabled
+      aria-label="Example icon button with a open in new tab icon"
+    >
+      <mat-icon class="alert__icon" (click)="onClose.emit()">close</mat-icon>
+    </button>
+  </div>
 </mat-card>

@@ -3,7 +3,12 @@
     {{ authInfo$.getValue().isSignIn ? 'Authorization' : 'Registration' }}
   </h1>
 
-  <app-alert *ngIf="!!error" [message]="error.message" color="warn"></app-alert>
+  <app-alert
+    *ngIf="!!error"
+    [message]="error.message"
+    color="warn"
+    (onClose)="handleCloseAlert()"
+  ></app-alert>
 
   <form
     class="auth-page__form"
@@ -53,9 +58,18 @@
       color="primary"
       type="submit"
       class="auth-page__btn"
-      [disabled]="formGroup.invalid"
+      [disabled]="formGroup.invalid || isLoading"
     >
-      {{ authInfo$.getValue().isSignIn ? 'Sign in' : 'Sign up' }}
+      <div class="auth-page__btn-content">
+        <div class="auth-page__btn-text">
+          {{ authInfo$.getValue().isSignIn ? 'Sign in' : 'Sign up' }}
+        </div>
+        <mat-spinner
+          *ngIf="isLoading"
+          [diameter]="20"
+          color="primary"
+        ></mat-spinner>
+      </div>
     </button>
   </form>
 
