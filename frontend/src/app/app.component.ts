@@ -1,11 +1,9 @@
-import { DOCUMENT } from '@angular/common';
-import { Renderer2 } from '@angular/core';
-import { Inject, OnInit } from '@angular/core';
 import { Component } from '@angular/core';
+import { DynamicStyleLoadingService } from './services/dynamic-style-loading.service';
 
-enum ThemeClassNames {
-  LIGHT = 'theme_light',
-  DARK = 'theme_dark',
+enum ThemeBundleNames {
+  LIGHT = 'light-theme',
+  DARK = 'dark-theme',
 }
 
 @Component({
@@ -13,17 +11,14 @@ enum ThemeClassNames {
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent implements OnInit {
-  public isDarkMode = false;
+export class AppComponent {
+  public isDarkMode = true;
 
-  get themeMode() {
-    return this.isDarkMode ? ThemeClassNames.DARK : ThemeClassNames.LIGHT;
+  get themeBundleName() {
+    return this.isDarkMode ? ThemeBundleNames.DARK : ThemeBundleNames.LIGHT;
   }
 
-  constructor(
-    @Inject(DOCUMENT) private document: Document,
-    private renderer: Renderer2
-  ) {}
+  constructor(private dynamicStyleLoadingService: DynamicStyleLoadingService) {}
 
   ngOnInit(): void {
     this.setThemeModeToDocument();
@@ -35,6 +30,9 @@ export class AppComponent implements OnInit {
   }
 
   setThemeModeToDocument(): void {
-    this.renderer.setAttribute(this.document.body, 'class', this.themeMode);
+    this.dynamicStyleLoadingService.loadStyle(
+      this.themeBundleName,
+      'dynamic-theme-style'
+    );
   }
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import {  map } from 'rxjs/operators';
 import { PeerService } from 'src/app/modules/peer/services/peer.service';
 
 @Component({

@@ -1,0 +1,33 @@
+@use 'sass:map';
+@use '~@angular/material' as mat;
+
+@mixin color($color-config) {
+  @each $name in primary, accent, warn {
+    .alert_#{$name} {
+      background-color: mat.get-color-from-palette(
+        map.get($color-config, $name)
+      );
+    }
+
+    .alert_#{$name}.mat-card {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
+  .alert__icon {
+    color: mat.get-color-from-palette(
+      map.get($color-config, accent),
+      default-contrast
+    );
+  }
+}
+
+@mixin theme($theme) {
+  $color-config: mat.get-color-config($theme);
+
+  @if $color-config != null {
+    @include color($color-config);
+  }
+}
