@@ -57,10 +57,26 @@ export class AuthService {
   private fetchJWTToken(url: string, user: User): Observable<string> {
     return this.http
       .post<ResponseWithJWTToken>(`${this.apiUrl}/auth/${url}`, user)
-      .pipe(map(extractToken), tap(this.setJWTToken).bind(this));
+      .pipe(
+        map(extractToken),
+        tap(
+          (token) => {
+            this.setJWTToken(token);
+            console.log(this.jwtToken);
+          },
+          () => {
+            this.setJWTToken('');
+            console.log(this.jwtToken);
+          }
+        )
+      );
   }
 
   private setJWTToken(token: string) {
     this.jwtToken = token;
+  }
+
+  get isAuth(): boolean {
+    return !!this.jwtToken;
   }
 }
