@@ -1,5 +1,7 @@
 @use '~@angular/material' as mat;
 
+@use 'all-custom-components';
+
 @include mat.core();
 
 $app-primary: mat.define-palette(mat.$deep-purple-palette);
@@ -17,3 +19,5 @@ $app-theme: mat.define-light-theme(
 );
 
 @include mat.all-component-themes($app-theme);
+
+@include all-custom-components.apply-theme($app-theme);

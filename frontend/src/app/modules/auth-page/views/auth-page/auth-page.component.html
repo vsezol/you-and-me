@@ -3,20 +3,24 @@
     {{ authInfo$.getValue().isSignIn ? 'Authorization' : 'Registration' }}
   </h1>
 
-  <app-alert
-    *ngIf="!!error"
-    [message]="error.message"
-    color="warn"
-    (onClose)="handleCloseAlert()"
-  ></app-alert>
-
   <form
     class="auth-page__form"
     [formGroup]="formGroup"
     #formElement
     (submit)="handleSubmit()"
   >
-    <mat-form-field appearance="outline" class="auth-page__input">
+    <app-alert
+      *ngIf="!!error"
+      [message]="error.message"
+      color="warn"
+      (onClose)="handleCloseAlert()"
+    ></app-alert>
+
+    <mat-form-field
+      appearance="outline"
+      class="auth-page__input"
+      [ngStyle]="{ 'margin-top': '20px' }"
+    >
       <mat-label>Username</mat-label>
       <input
         matInput

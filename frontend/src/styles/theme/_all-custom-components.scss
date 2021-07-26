@@ -1,0 +1,6 @@
+// custom components mixins
+@use '../../app/modules/auth-page/components/alert/alert.component.scss' as alert;
+
+@mixin apply-theme($theme) {
+  @include alert.theme($theme);
+}

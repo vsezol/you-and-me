@@ -1,13 +1,9 @@
-<mat-card [class]="'alert_' + color">
-  <div>
+<mat-card [class]="['alert_' + color, 'mat-elevation-z0']">
+  <div class="mat-h3" style="margin: 0">
     {{ message }}
   </div>
   <div>
-    <button
-      mat-icon-button
-      disabled
-      aria-label="Example icon button with a open in new tab icon"
-    >
+    <button mat-icon-button>
       <mat-icon class="alert__icon" (click)="onClose.emit()">close</mat-icon>
     </button>
   </div>

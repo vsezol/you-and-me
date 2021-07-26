@@ -1,7 +1,6 @@
 @use '~@angular/material' as mat;
 
-// custom components mixins
-@use '../../app/modules/auth-page/components/alert/alert.component.scss' as alert;
+@use 'all-custom-components';
 
 @include mat.core();
 
@@ -19,8 +18,6 @@ $app-theme: mat.define-dark-theme(
   )
 );
 
-// angular material components
 @include mat.all-component-themes($app-theme);
 
-// custom components
-@include alert.theme($app-theme);
+@include all-custom-components.apply-theme($app-theme);
