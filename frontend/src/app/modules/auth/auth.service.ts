@@ -29,7 +29,14 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
-  signUp(user: User): Observable<string> {
+  public signOut(): Promise<void> {
+    return new Promise((res) => {
+      this.setJWTToken('');
+      res();
+    });
+  }
+
+  public signUp(user: User): Observable<string> {
     return this.fetchJWTToken('register', user).pipe(
       catchError((err: HttpErrorResponse) => {
         console.log('signUp', err);
@@ -38,7 +45,7 @@ export class AuthService {
     );
   }
 
-  signIn(user: User): Observable<string> {
+  public signIn(user: User): Observable<string> {
     return this.fetchJWTToken('login', user).pipe(
       catchError((err: HttpErrorResponse) => {
         switch (err.status) {
@@ -72,6 +79,10 @@ export class AuthService {
 
   private setJWTToken(token: string) {
     this.jwtToken = token;
+  }
+
+  get token(): string {
+    return this.jwtToken;
   }
 
   get isAuth(): boolean {

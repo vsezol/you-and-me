@@ -24,6 +24,11 @@ const routes: Routes = [
       ),
     canActivate: [AuthGuard],
   },
+  {
+    path: '',
+    redirectTo: 'auth',
+    pathMatch: 'full',
+  },
 ];
 
 @NgModule({
