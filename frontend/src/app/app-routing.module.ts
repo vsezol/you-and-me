@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from './modules/auth/auth.guard';
+import { AuthModule } from './modules/auth/auth.module';
 
 const routes: Routes = [
   {
@@ -19,10 +21,18 @@ const routes: Routes = [
         (m) => m.AuthPageModule
       ),
   },
+  {
+    path: 'contacts',
+    loadChildren: () =>
+      import('./modules/contacts-page/contacts-page.module').then(
+        (m) => m.ContactsPageModule
+      ),
+    canActivate: [AuthGuard],
+  },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes), AuthModule],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}

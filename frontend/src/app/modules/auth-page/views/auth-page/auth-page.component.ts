@@ -61,6 +61,14 @@ export class AuthPageComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    this.route.queryParams
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe((queryParams) => {
+        if (!!queryParams?.errorMessage) {
+          this.error = new Error(queryParams.errorMessage);
+        }
+      });
+
     this.formGroup = new FormGroup({
       [ControlNames.USERNAME]: new FormControl('', Validators.required),
       [ControlNames.PASSWORD]: new FormControl('', [
