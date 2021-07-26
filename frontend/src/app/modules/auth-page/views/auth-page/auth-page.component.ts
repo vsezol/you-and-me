@@ -8,7 +8,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { AuthService, User } from 'src/app/modules/auth/auth.service';
@@ -57,7 +57,8 @@ export class AuthPageComponent implements OnInit, OnDestroy {
   constructor(
     private validErrors: ValidationErrorsService<ControlNames>,
     private authService: AuthService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -115,6 +116,7 @@ export class AuthPageComponent implements OnInit, OnDestroy {
           this.formElement.nativeElement.reset();
           this.error = null;
           this.isLoading = false;
+          this.router.navigate(['/contacts']);
         },
         (error: Error) => {
           console.log('submit', error);

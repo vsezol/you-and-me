@@ -6,7 +6,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 
 import { AppRoutingModule } from './app-routing.module';
-import { LoginModule } from './modules/login/login.module';
 import { ChatModule } from './modules/chat/chat.module';
 
 import { AppComponent } from './app.component';
@@ -19,7 +18,6 @@ import { ThemeSwitcherComponent } from './components/theme-switcher/theme-switch
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    LoginModule,
     ChatModule,
     MatIconModule,
     MatButtonModule,

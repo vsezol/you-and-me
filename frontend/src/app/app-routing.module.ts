@@ -10,11 +10,6 @@ const routes: Routes = [
       import('./modules/chat/chat.module').then((m) => m.ChatModule),
   },
   {
-    path: 'login',
-    loadChildren: () =>
-      import('./modules/login/login.module').then((m) => m.LoginModule),
-  },
-  {
     path: 'auth',
     loadChildren: () =>
       import('./modules/auth-page/auth-page.module').then(

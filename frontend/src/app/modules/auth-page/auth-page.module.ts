@@ -39,7 +39,6 @@ import { AlertComponent } from './components/alert/alert.component';
 
     AuthPageRoutingModule,
     SharedModule,
-    AuthModule,
   ],
   providers: [ValidationErrorsService],
 })
