@@ -11,13 +11,10 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
-import {
-  AuthService,
-  AuthResponse,
-  User,
-} from 'src/app/modules/auth/auth.service';
+import { AuthService, AuthResponse } from 'src/app/modules/auth/auth.service';
 import { ValidationErrorsService } from '../validation-errors.service';
 import { AuthTypeNames } from '../auth-page-routing.module';
+import { UserWithPassword } from '../../../common';
 
 enum ControlNames {
   USERNAME = 'username',
@@ -100,7 +97,7 @@ export class AuthPageComponent implements OnInit, OnDestroy {
 
   public handleSubmit() {
     if (this.formGroup.valid) {
-      const user: User = {
+      const user: UserWithPassword = {
         username: this.formGroup.value.username,
         password: this.formGroup.value.password,
       };

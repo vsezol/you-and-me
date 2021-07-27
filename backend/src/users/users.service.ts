@@ -1,16 +1,5 @@
 import { Injectable } from '@nestjs/common';
-
-export interface User {
-  username: string;
-}
-
-export interface UserWithPassword extends User {
-  password: string;
-}
-
-export interface UserInDB extends UserWithPassword {
-  userId: number;
-}
+import { UserInDB, UserWithPassword } from '../common';
 
 @Injectable()
 export class UsersService {

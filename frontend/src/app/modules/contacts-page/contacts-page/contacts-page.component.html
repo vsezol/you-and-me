@@ -1,1 +1,8 @@
-<p>contacts-page works!</p>
+<mat-card *ngIf="currentUser">
+  <div fxLayout="row" fxLayoutAlign="space-between center">
+    <mat-card-title style="margin: 0">{{ currentUser.username }}</mat-card-title>
+    <button mat-mini-fab [cdkCopyToClipboard]="currentUser.username">
+      <mat-icon>content_copy</mat-icon>
+    </button>
+  </div>
+</mat-card>

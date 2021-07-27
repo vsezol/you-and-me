@@ -8,11 +8,7 @@ import {
   SomethingWentWrongError,
   UnauthorizedError,
 } from '../../common/errors';
-
-export interface User {
-  username: string;
-  password: string;
-}
+import { UserWithPassword } from '../../common';
 
 export interface AuthResponse {
   token: string;
@@ -45,7 +41,7 @@ export class AuthService {
     });
   }
 
-  public signUp(user: User): Observable<AuthResponse> {
+  public signUp(user: UserWithPassword): Observable<AuthResponse> {
     return this.fetchJWTToken('register', user).pipe(
       catchError((err: HttpErrorResponse) => {
         console.log('signUp', err);
@@ -54,7 +50,7 @@ export class AuthService {
     );
   }
 
-  public signIn(user: User): Observable<AuthResponse> {
+  public signIn(user: UserWithPassword): Observable<AuthResponse> {
     return this.fetchJWTToken('login', user).pipe(
       catchError((err: HttpErrorResponse) => {
         switch (err.status) {
@@ -70,7 +66,10 @@ export class AuthService {
     );
   }
 
-  private fetchJWTToken(url: string, user: User): Observable<AuthResponse> {
+  private fetchJWTToken(
+    url: string,
+    user: UserWithPassword
+  ): Observable<AuthResponse> {
     return this.http
       .post<AuthResponse>(`${this.apiUrl}/auth/${url}`, user)
       .pipe(
