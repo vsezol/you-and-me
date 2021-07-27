@@ -14,7 +14,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { SharedModule } from '../shared/shared.module';
 import { AuthPageRoutingModule } from './auth-page-routing.module';
 
-import { AuthPageComponent } from './views/auth-page/auth-page.component';
+import { AuthPageComponent } from './auth-page/auth-page.component';
 import { ValidationErrorsService } from './validation-errors.service';
 import { AuthModule } from '../auth/auth.module';
 import { AuthSwitcherComponent } from './components/auth-switcher/auth-switcher.component';

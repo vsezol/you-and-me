@@ -2,8 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 
-import { MainLayoutComponent } from '../../components/main-layout/main-layout.component';
-import { AuthPageComponent } from './views/auth-page/auth-page.component';
+import { MainLayoutComponent } from '../../core/components/main-layout/main-layout.component';
+import { AuthPageComponent } from './auth-page/auth-page.component';
 
 export enum AuthTypeNames {
   SIGN_IN = 'sign-in',

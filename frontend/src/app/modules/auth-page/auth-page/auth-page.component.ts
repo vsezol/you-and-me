@@ -12,8 +12,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { AuthService, User } from 'src/app/modules/auth/auth.service';
-import { ValidationErrorsService } from '../../validation-errors.service';
-import { AuthTypeNames } from '../../auth-page-routing.module';
+import { ValidationErrorsService } from '../validation-errors.service';
+import { AuthTypeNames } from '../auth-page-routing.module';
 
 enum ControlNames {
   USERNAME = 'username',

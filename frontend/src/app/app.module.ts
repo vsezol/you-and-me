@@ -9,8 +9,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { ChatModule } from './modules/chat/chat.module';
 
 import { AppComponent } from './app.component';
-import { MainLayoutComponent } from './components/main-layout/main-layout.component';
-import { ThemeSwitcherComponent } from './components/theme-switcher/theme-switcher.component';
+import { MainLayoutComponent } from './core/components/main-layout/main-layout.component';
+import { ThemeSwitcherComponent } from './core/components/theme-switcher/theme-switcher.component';
 
 @NgModule({
   declarations: [AppComponent, MainLayoutComponent, ThemeSwitcherComponent],

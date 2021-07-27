@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ContactsPageComponent } from './views/contacts-page/contacts-page.component';
+import { ContactsPageComponent } from './contacts-page/contacts-page.component';
 import { ContactsPageRoutingModule } from './contacts-page-routing.module';
 
 @NgModule({
