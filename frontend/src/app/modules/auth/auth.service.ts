@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { catchError, map, tap } from 'rxjs/operators';
+import { catchError, tap } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
 
 import {
@@ -14,29 +14,38 @@ export interface User {
   password: string;
 }
 
-interface ResponseWithJWTToken {
-  access_token: string;
+export interface AuthResponse {
+  token: string;
+  expiresIn: number;
 }
 
-const extractToken = (response: ResponseWithJWTToken): string =>
-  response.access_token;
+interface AuthData {
+  token: string;
+  expirationDate: number;
+}
+
+const AUTH_STORAGE_KEY = 'auth-data';
 
 @Injectable()
 export class AuthService {
   private apiUrl = environment.apiUrl;
 
-  private jwtToken = '';
-
   constructor(private http: HttpClient) {}
+
+  public isAuthenticated(): boolean {
+    const { token, expirationDate } = this.getAuthData();
+
+    return token.length > 0 && Date.now() < expirationDate;
+  }
 
   public signOut(): Promise<void> {
     return new Promise((res) => {
-      this.setJWTToken('');
+      this.clearToken();
       res();
     });
   }
 
-  public signUp(user: User): Observable<string> {
+  public signUp(user: User): Observable<AuthResponse> {
     return this.fetchJWTToken('register', user).pipe(
       catchError((err: HttpErrorResponse) => {
         console.log('signUp', err);
@@ -45,7 +54,7 @@ export class AuthService {
     );
   }
 
-  public signIn(user: User): Observable<string> {
+  public signIn(user: User): Observable<AuthResponse> {
     return this.fetchJWTToken('login', user).pipe(
       catchError((err: HttpErrorResponse) => {
         switch (err.status) {
@@ -61,31 +70,55 @@ export class AuthService {
     );
   }
 
-  private fetchJWTToken(url: string, user: User): Observable<string> {
+  private fetchJWTToken(url: string, user: User): Observable<AuthResponse> {
     return this.http
-      .post<ResponseWithJWTToken>(`${this.apiUrl}/auth/${url}`, user)
+      .post<AuthResponse>(`${this.apiUrl}/auth/${url}`, user)
       .pipe(
-        map(extractToken),
         tap(
-          (token) => {
-            this.setJWTToken(token);
+          (response) => {
+            this.setToken(response.token, response.expiresIn);
           },
           () => {
-            this.setJWTToken('');
+            this.clearToken();
           }
         )
       );
   }
 
-  private setJWTToken(token: string) {
-    this.jwtToken = token;
+  public getToken(): string {
+    return this.getAuthData().token;
   }
 
-  get token(): string {
-    return this.jwtToken;
+  private setToken(token: string, expiresIn: number): void {
+    this.setAuthData(token, expiresIn);
   }
 
-  get isAuth(): boolean {
-    return !!this.jwtToken;
+  private clearToken(): void {
+    this.setAuthData();
+  }
+
+  private setAuthData(token = '', expiresIn = 0): void {
+    const auth: AuthData = {
+      token,
+      expirationDate: this.calcExpirationDate(expiresIn),
+    };
+
+    localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(auth));
+  }
+
+  private getAuthData(): AuthData {
+    const jsonData =
+      localStorage.getItem(AUTH_STORAGE_KEY) ?? JSON.stringify({});
+
+    const { token = '', expirationDate = 0 }: AuthData = JSON.parse(jsonData);
+
+    return {
+      token,
+      expirationDate,
+    };
+  }
+
+  private calcExpirationDate(expiresIn: number): number {
+    return Date.now() + expiresIn * 1000;
   }
 }

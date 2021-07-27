@@ -5,7 +5,7 @@ import { JwtStrategy } from './jwt.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 
-import { jwtConstants } from './constants';
+import { EXPIRES_IN, jwtConstants } from './constants';
 
 import { UsersModule } from '../users/users.module';
 
@@ -15,7 +15,7 @@ import { UsersModule } from '../users/users.module';
     PassportModule,
     JwtModule.register({
       secret: jwtConstants.secret,
-      signOptions: { expiresIn: '3600s' },
+      signOptions: { expiresIn: `${EXPIRES_IN}s` },
     }),
   ],
   providers: [AuthService, LocalStrategy, JwtStrategy],

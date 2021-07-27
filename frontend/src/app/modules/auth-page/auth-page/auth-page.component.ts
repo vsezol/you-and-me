@@ -11,7 +11,11 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
-import { AuthService, User } from 'src/app/modules/auth/auth.service';
+import {
+  AuthService,
+  AuthResponse,
+  User,
+} from 'src/app/modules/auth/auth.service';
 import { ValidationErrorsService } from '../validation-errors.service';
 import { AuthTypeNames } from '../auth-page-routing.module';
 
@@ -101,7 +105,7 @@ export class AuthPageComponent implements OnInit, OnDestroy {
         password: this.formGroup.value.password,
       };
 
-      let auth$: Observable<string>;
+      let auth$: Observable<AuthResponse>;
 
       if (this.authInfo$.getValue().isSignIn) {
         auth$ = this.authService.signIn(user);

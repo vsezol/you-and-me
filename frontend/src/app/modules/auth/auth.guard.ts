@@ -8,7 +8,9 @@ export class AuthGuard implements CanActivate {
   constructor(private authService: AuthService, private router: Router) {}
 
   canActivate(): boolean {
-    if (this.authService.isAuth) {
+
+    console.log(this.authService.isAuthenticated());
+    if (this.authService.isAuthenticated()) {
       return true;
     }
 
@@ -17,6 +19,7 @@ export class AuthGuard implements CanActivate {
         errorMessage: 'You are not authorized!',
       },
     });
+
     return false;
   }
 }

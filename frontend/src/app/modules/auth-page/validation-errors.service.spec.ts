@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { ValidationErrorsService } from './validation-errors.service';
 
 describe('ValidationErrorsService', () => {
-  let service: ValidationErrorsService;
+  let service: ValidationErrorsService<string>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
