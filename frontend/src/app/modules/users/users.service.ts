@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
-import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+import { environment } from '../../../environments/environment';
+
 import { ServerUser } from '../../common';
 
 @Injectable()
@@ -9,9 +12,21 @@ export class UsersService {
 
   constructor(private http: HttpClient) {}
 
-  getCurrentUser() {
+  public getCurrentUser(): Observable<ServerUser> {
     const url = `${this.apiUrl}/users/current`;
 
     return this.http.get<ServerUser>(url);
+  }
+
+  public getUsers(
+    { withOutCurrent } = { withOutCurrent: false }
+  ): Observable<ServerUser[]> {
+    const url = `${this.apiUrl}/users/all`;
+
+    return this.http.get<ServerUser[]>(url, {
+      params: {
+        withOutCurrent,
+      },
+    });
   }
 }

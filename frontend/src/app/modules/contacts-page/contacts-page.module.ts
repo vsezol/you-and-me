@@ -16,7 +16,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     UsersModule,
     MaterialModule,
     ClipboardModule,
-    FlexLayoutModule
-  ]
+    FlexLayoutModule,
+  ],
 })
 export class ContactsPageModule {}

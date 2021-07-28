@@ -3,7 +3,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { UsersService } from '../../users/users.service';
-import { User } from '../../../common';
+import { ServerUser, User } from '../../../common';
 
 @Component({
   selector: 'app-contacts-page',
@@ -17,12 +17,21 @@ export class ContactsPageComponent implements OnInit, OnDestroy {
 
   currentUser!: User;
 
+  users!: ServerUser[];
+
   ngOnInit(): void {
     this.usersService
       .getCurrentUser()
       .pipe(takeUntil(this.destroyed$))
       .subscribe((user) => {
         this.currentUser = user;
+      });
+
+    this.usersService
+      .getUsers({ withOutCurrent: true })
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe((users) => {
+        this.users = users;
       });
   }
 

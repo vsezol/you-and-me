@@ -25,6 +25,10 @@ export class UsersService {
     return this.users.find((user) => user.username === username);
   }
 
+  async findByCondition(condition: (user: UserInDB) => boolean): Promise<UserInDB[]> {
+    return this.users.filter((user) => condition(user));
+  }
+
   async insertOne(user: UserWithPassword): Promise<UserInDB> {
     const userForDB = {
       username: user.username,
