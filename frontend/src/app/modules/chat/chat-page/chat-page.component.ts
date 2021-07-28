@@ -29,7 +29,7 @@ export class ChatPageComponent implements OnInit {
       this.stream$.next(stream);
     });
 
-    this.peerService.incomingСall$.subscribe((mediaConnection) => {
+    this.peerService.incomingCall$.subscribe((mediaConnection) => {
       const isAccept = window.confirm('Incoming Call');
 
       if (!isAccept) return;

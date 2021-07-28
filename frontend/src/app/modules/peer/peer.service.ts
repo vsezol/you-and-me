@@ -11,7 +11,7 @@ interface MediaConnectionWithRemoteStream extends MediaConnection {
 export class PeerService {
   private peer: Peer;
 
-  public incomingСall$: Subject<MediaConnectionWithRemoteStream> =
+  public incomingCall$: Subject<MediaConnectionWithRemoteStream> =
     new Subject<MediaConnectionWithRemoteStream>();
 
   public peerId$: BehaviorSubject<string> = new BehaviorSubject<string>('');
@@ -28,7 +28,7 @@ export class PeerService {
     });
 
     this.peer.on('call', (connection: any) => {
-      this.incomingСall$.next(connection);
+      this.incomingCall$.next(connection);
     });
 
     this.peer.on('error', (error: Error) => {

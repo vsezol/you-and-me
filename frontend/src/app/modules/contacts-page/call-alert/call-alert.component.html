@@ -1,0 +1,16 @@
+<mat-card class="call-alert">
+  <mat-card-header fxLayout="column" fxLayoutAlign="center center">
+    <mat-card-title>Incoming call</mat-card-title>
+    <mat-card-subtitle>{{ data.username }}</mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-actions fxLayout="row" fxLayoutAlign="space-between center">
+    <button mat-mini-fab color="warn">
+      <mat-icon>call_end</mat-icon>
+    </button>
+
+    <button mat-mini-fab color="primary">
+      <mat-icon>call</mat-icon>
+    </button>
+  </mat-card-actions>
+</mat-card>

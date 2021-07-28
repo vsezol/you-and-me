@@ -19,13 +19,25 @@ export class UsersService {
       username: 'vsezol',
       password: '123456',
     },
+    {
+      userId: 4,
+      username: 'test1',
+      password: '123456',
+    },
+    {
+      userId: 5,
+      username: 'test2',
+      password: '123456',
+    },
   ];
 
   async findOne(username: string): Promise<UserInDB | undefined> {
     return this.users.find((user) => user.username === username);
   }
 
-  async findByCondition(condition: (user: UserInDB) => boolean): Promise<UserInDB[]> {
+  async findByCondition(
+    condition: (user: UserInDB) => boolean
+  ): Promise<UserInDB[]> {
     return this.users.filter((user) => condition(user));
   }
 

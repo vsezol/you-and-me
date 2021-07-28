@@ -1,23 +1,24 @@
-<mat-card *ngIf="currentUser">
-  <div fxLayout="row" fxLayoutAlign="space-between center">
-    <mat-card-title style="margin: 0">{{
-      currentUser.username
-    }}</mat-card-title>
-    <button mat-mini-fab [cdkCopyToClipboard]="currentUser.username">
-      <mat-icon>content_copy</mat-icon>
-    </button>
-  </div>
-</mat-card>
+<app-contact-card *ngIf="currentUser" [username]="currentUser.username">
+  <button
+    action
+    mat-mini-fab
+    color="primary"
+    [cdkCopyToClipboard]="currentUser.username"
+  >
+    <mat-icon>content_copy</mat-icon>
+  </button>
+</app-contact-card>
 
 <mat-divider style="margin: 10px 0px"></mat-divider>
 
 <ng-container *ngIf="users && users.length > 0">
-  <mat-card *ngFor="let user of users" style="margin: 10px 0px">
-    <div fxLayout="row" fxLayoutAlign="space-between center">
-      <mat-card-title style="margin: 0">{{ user.username }}</mat-card-title>
-      <button mat-mini-fab [cdkCopyToClipboard]="user.username">
-        <mat-icon>call</mat-icon>
-      </button>
-    </div>
-  </mat-card>
+  <app-contact-card
+    *ngFor="let user of users"
+    [username]="user.username"
+    margin="10px 0px"
+  >
+    <button action mat-mini-fab color="primary">
+      <mat-icon>call</mat-icon>
+    </button>
+  </app-contact-card>
 </ng-container>
