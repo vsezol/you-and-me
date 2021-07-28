@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject, ReplaySubject, Subject } from 'rxjs';
 
 import Peer, { MediaConnection } from 'peerjs';
 
@@ -36,9 +36,15 @@ export class PeerService {
     });
   }
 
-  call(peerId: string, mediaStream: MediaStream): Promise<MediaStream> {
+  call(
+    peerId: string,
+    mediaStream: MediaStream,
+    metadata: any = {}
+  ): Promise<MediaStream> {
     return new Promise<MediaStream>((resolve) => {
-      const call = this.peer.call(peerId, mediaStream);
+      const call = this.peer.call(peerId, mediaStream, {
+        metadata,
+      });
 
       call.on('stream', (stream: any) => {
         resolve(stream);

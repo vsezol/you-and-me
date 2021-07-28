@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { MediaService } from '../services/media.service';
 import { PeerService } from '../../peer/peer.service';
+import { MediaService } from '../../media/media.service';
 
 @Component({
   selector: 'app-chat-page',

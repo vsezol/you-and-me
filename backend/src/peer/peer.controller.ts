@@ -15,15 +15,17 @@ export class PeerController {
 
   @UseGuards(JwtAuthGuard)
   @Get('add/:id')
-  addPeer(@Request() req, @Param('id') id: string): string {
+  addPeer(@Request() req, @Param('id') id: string) {
     this.peerService.addId(req.user.username, id);
 
-    return 'success';
+    return { message: 'success' };
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('id')
-  getPeer(@Query('username') username: string): string {
-    return this.peerService.findId(username) ?? '';
+  getPeer(@Query('username') username: string) {
+    const peerId = this.peerService.findId(username) ?? '';
+
+    return { peerId };
   }
 }

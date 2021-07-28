@@ -17,8 +17,10 @@
     [username]="user.username"
     margin="10px 0px"
   >
-    <button action mat-mini-fab color="primary">
+    <button action mat-mini-fab color="primary" (click)="onCall(user.username)">
       <mat-icon>call</mat-icon>
     </button>
   </app-contact-card>
 </ng-container>
+
+<app-call-alert-dialog></app-call-alert-dialog>

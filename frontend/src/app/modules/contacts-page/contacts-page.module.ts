@@ -11,12 +11,16 @@ import { ContactsPageRoutingModule } from './contacts-page-routing.module';
 import { ContactsPageComponent } from './contacts-page/contacts-page.component';
 import { ContactCardComponent } from './contact-card/contact-card.component';
 import { CallAlertComponent } from './call-alert/call-alert.component';
+import { HttpClientModule } from '@angular/common/http';
+import { MediaModule } from '../media/media.module';
+import { CallAlertDialogDirective } from './call-alert-dialog.directive';
 
 @NgModule({
   declarations: [
     ContactsPageComponent,
     ContactCardComponent,
     CallAlertComponent,
+    CallAlertDialogDirective,
   ],
   imports: [
     CommonModule,
@@ -27,6 +31,8 @@ import { CallAlertComponent } from './call-alert/call-alert.component';
     ContactsPageRoutingModule,
     UsersModule,
     PeerModule,
+    MediaModule,
+    HttpClientModule,
   ],
 })
 export class ContactsPageModule {}

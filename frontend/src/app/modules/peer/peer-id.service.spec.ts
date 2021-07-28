@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { CallAlertService } from './call-alert.service';
+import { PeerIdService } from './peer-id.service';
 
-describe('CallAlertService', () => {
-  let service: CallAlertService;
+describe('PeerIdService', () => {
+  let service: PeerIdService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(CallAlertService);
+    service = TestBed.inject(PeerIdService);
   });
 
   it('should be created', () => {
