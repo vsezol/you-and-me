@@ -24,7 +24,7 @@ export class CallAlertDialogDirective {
           console.log('call declined');
         }
 
-        console.log('remoteStream', connection.remoteStream);
+        console.log('connection', connection);
       });
     });
   }
