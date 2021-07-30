@@ -4,6 +4,7 @@ import { BehaviorSubject, ReplaySubject, Subject } from 'rxjs';
 
 import { ICE_SERVERS } from './contants';
 import { MediaService } from '../media/media.service';
+import { LoggerService } from '../logger/logger.service';
 
 interface CallMetadata {
   caller: {
@@ -21,13 +22,16 @@ export class NewPeerService {
 
   public incomingCall$: Subject<CallMetadata> = new Subject<CallMetadata>();
 
-  private peer: Peer;
+  public localPeerId$: Subject<string> = new Subject<string>();
 
-  private localPeerId = '';
+  private peer: Peer;
 
   private remoteConnection$!: BehaviorSubject<MediaConnection>;
 
-  constructor(private mediaService: MediaService) {
+  constructor(
+    private mediaService: MediaService,
+    private loggerService: LoggerService
+  ) {
     this.peer = new Peer({
       config: {
         iceServers: ICE_SERVERS,
@@ -35,40 +39,46 @@ export class NewPeerService {
     });
 
     this.peer.on('open', (peerId: string) => {
-      this.localPeerId = peerId;
+      this.localPeerId$.next(peerId);
     });
 
     this.peer.on('call', (connection: MediaConnection) => {
-      if (!this.remoteConnection$) {
-        this.remoteConnection$ = new BehaviorSubject(connection);
-      } else {
-        this.remoteConnection$.next(connection);
-      }
-
+      this.setRemoteConnection(connection);
       this.incomingCall$.next(connection.metadata);
     });
   }
 
   public async answer(): Promise<void> {
     try {
-      await this.createLocalStream();
+      const localStream = await this.createLocalStream();
+
+      const connection = this.remoteConnection$.getValue();
+      connection.answer(localStream);
+
       await this.waitForRemoteStream();
     } catch (error) {
-      console.log('Error in answer', error);
+      this.loggerService.error('NewPeerService')('Error in answer', error);
     }
   }
 
-  public async call(peerId: string): Promise<void> {
+  public async call(peerId: string, metadata: CallMetadata): Promise<void> {
     try {
       const localStream = await this.createLocalStream();
 
-      const connection = this.peer.call(peerId, localStream);
-      this.remoteConnection$.next(connection);
+      const connection = this.peer.call(peerId, localStream, {
+        metadata,
+      });
+      this.setRemoteConnection(connection);
 
       await this.waitForRemoteStream();
     } catch (error) {
-      console.log('Error in call', error);
+      this.loggerService.error('NewPeerService')('Error in call', error);
     }
+  }
+
+  public decline(): void {
+    const connection = this.remoteConnection$.getValue();
+    connection.close();
   }
 
   private async createLocalStream(): Promise<MediaStream> {
@@ -78,7 +88,9 @@ export class NewPeerService {
 
       return localStream;
     } catch (error) {
-      console.log('Error in creating local stream');
+      this.loggerService.error('NewPeerService')(
+        'Error in creating local stream'
+      );
       throw error;
     }
   }
@@ -88,16 +100,28 @@ export class NewPeerService {
 
     return await new Promise<void>((resolve, reject) => {
       connection.on('stream', (remoteStream: MediaStream) => {
+        this.loggerService.info('NewPeerService')('Connection accepted!');
+
         this.remoteStream$.next(remoteStream);
 
         resolve();
       });
 
       connection.on('close', () => {
-        console.log('Connection closed');
+        const error = new Error('Connection closed');
 
-        reject(new Error('Connection closed'));
+        this.loggerService.error('NewPeerService')(error.message);
+
+        reject(error);
       });
     });
+  }
+
+  private setRemoteConnection(connection: MediaConnection) {
+    if (!this.remoteConnection$) {
+      this.remoteConnection$ = new BehaviorSubject(connection);
+    } else {
+      this.remoteConnection$.next(connection);
+    }
   }
 }

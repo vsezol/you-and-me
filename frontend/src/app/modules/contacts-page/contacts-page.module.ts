@@ -4,7 +4,6 @@ import { ClipboardModule } from '@angular/cdk/clipboard';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { UsersModule } from '../users/users.module';
-import { PeerModule } from '../peer/peer.module';
 import { MaterialModule } from '../material/material.module';
 import { ContactsPageRoutingModule } from './contacts-page-routing.module';
 
@@ -14,6 +13,8 @@ import { CallAlertComponent } from './call-alert/call-alert.component';
 import { HttpClientModule } from '@angular/common/http';
 import { MediaModule } from '../media/media.module';
 import { CallAlertDialogDirective } from './call-alert-dialog.directive';
+import { NewPeerModule } from '../new-peer/new-peer.module';
+import { PeerModule } from '../peer/peer.module';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { CallAlertDialogDirective } from './call-alert-dialog.directive';
     MaterialModule,
     ContactsPageRoutingModule,
     UsersModule,
+    NewPeerModule,
     PeerModule,
     MediaModule,
     HttpClientModule,

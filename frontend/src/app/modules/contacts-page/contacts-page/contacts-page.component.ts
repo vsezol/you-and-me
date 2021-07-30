@@ -7,6 +7,7 @@ import { ServerUser, User } from '../../../common';
 import { PeerIdService } from '../../peer/peer-id.service';
 import { PeerService } from '../../peer/peer.service';
 import { MediaService } from '../../media/media.service';
+import { NewPeerService } from '../../new-peer/new-peer.service';
 
 @Component({
   selector: 'app-contacts-page',
@@ -17,7 +18,8 @@ export class ContactsPageComponent implements OnInit, OnDestroy {
   constructor(
     private usersService: UsersService,
     private peerIdService: PeerIdService,
-    private peerService: PeerService,
+    private newPeerService: NewPeerService,
+    // private peerService: PeerService,
     private mediaService: MediaService
   ) {}
 
@@ -42,7 +44,7 @@ export class ContactsPageComponent implements OnInit, OnDestroy {
         this.users = users;
       });
 
-    this.peerService.peerId$
+    this.newPeerService.localPeerId$
       .pipe(takeUntil(this.destroyed$))
       .subscribe((peerId) => {
         if (!peerId) return;
@@ -62,15 +64,11 @@ export class ContactsPageComponent implements OnInit, OnDestroy {
     this.peerIdService
       .getPeerIdByUsername(username)
       .pipe(takeUntil(this.destroyed$))
-      .subscribe((peerId) => {
+      .subscribe(async (peerId) => {
         this.logUserPeerId(username, peerId);
 
-        this.mediaService.createUserMediaStream().then((mediaStream) => {
-          this.peerService
-            .call(peerId, mediaStream, { username: this.currentUser.username })
-            .then((remoteStream) => {
-              console.log('remote stream', remoteStream);
-            });
+        await this.newPeerService.call(peerId, {
+          caller: { name: this.currentUser.username },
         });
       });
   }
