@@ -1,7 +1,9 @@
 import { Directive } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { CallAlertComponent } from './call-alert/call-alert.component';
-import { NewPeerService } from '../new-peer/new-peer.service';
+import { LoggerService } from '../logger/logger.service';
+import { Router } from '@angular/router';
+import { PeerService } from '../peer/peer.service';
 
 @Directive({
   selector: 'app-call-alert-dialog',
@@ -9,12 +11,14 @@ import { NewPeerService } from '../new-peer/new-peer.service';
 export class CallAlertDialogDirective {
   constructor(
     private dialog: MatDialog,
-    private newPeerService: NewPeerService
+    private peerService: PeerService,
+    private loggerService: LoggerService,
+    private router: Router
   ) {
-    this.newPeerService.incomingCall$.subscribe((metadata) => {
+    this.peerService.incomingCall$.subscribe((metadata) => {
       const callerName = metadata.caller.name;
 
-      console.log('incoming call from', callerName);
+      loggerService.info('ContactsPage')('Incoming call from', callerName);
 
       const dialogRef = this.dialog.open(CallAlertComponent, {
         width: '250px',
@@ -25,11 +29,13 @@ export class CallAlertDialogDirective {
 
       dialogRef.afterClosed().subscribe(async (isAccepted) => {
         if (isAccepted) {
-          console.log('call accepted');
-          await this.newPeerService.answer();
+          loggerService.log('ContactsPage')('Call accepted');
+          await this.peerService.answer();
+
+          this.router.navigate(['chat']);
         } else {
-          console.log('call declined');
-          await this.newPeerService.decline();
+          loggerService.log('ContactsPage')('Call declined');
+          await this.peerService.decline();
         }
       });
     });

@@ -5,11 +5,11 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-main-grid',
-  templateUrl: './main-grid.component.html',
-  styleUrls: ['./main-grid.component.scss'],
+  selector: 'app-grid',
+  templateUrl: './grid.component.html',
+  styleUrls: ['./grid.component.scss'],
 })
-export class MainGridComponent implements OnInit {
+export class GridComponent implements OnInit {
   private _withDivider = false;
   @Input()
   get withDivider(): any {

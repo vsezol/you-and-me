@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { PeerService } from './peer.service';
 
-describe('PeerService', () => {
+describe('NewPeerService', () => {
   let service: PeerService;
 
   beforeEach(() => {

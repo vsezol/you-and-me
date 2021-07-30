@@ -1,61 +1,125 @@
 import { Injectable } from '@angular/core';
+import Peer, { MediaConnection } from 'peerjs';
 import { BehaviorSubject, ReplaySubject, Subject } from 'rxjs';
 
-import Peer, { MediaConnection } from 'peerjs';
+import { ICE_SERVERS } from './contants';
+import { MediaService } from './media.service';
+import { LoggerService } from '../logger/logger.service';
 
-interface MediaConnectionWithRemoteStream extends MediaConnection {
-  remoteStream: MediaStream;
+interface CallMetadata {
+  caller: {
+    name: string;
+  };
 }
 
 @Injectable()
 export class PeerService {
+  public localStream$: ReplaySubject<MediaStream> =
+    new ReplaySubject<MediaStream>(1);
+
+  public remoteStream$: ReplaySubject<MediaStream> =
+    new ReplaySubject<MediaStream>(1);
+
+  public incomingCall$: Subject<CallMetadata> = new Subject<CallMetadata>();
+
+  public localPeerId$: Subject<string> = new Subject<string>();
+
   private peer: Peer;
 
-  public incomingCall$: Subject<MediaConnectionWithRemoteStream> =
-    new Subject<MediaConnectionWithRemoteStream>();
+  private remoteConnection$!: BehaviorSubject<MediaConnection>;
 
-  public peerId$: BehaviorSubject<string> = new BehaviorSubject<string>('');
-
-  constructor() {
+  constructor(
+    private mediaService: MediaService,
+    private loggerService: LoggerService
+  ) {
     this.peer = new Peer({
       config: {
-        iceServers: [
-          { urls: 'stun:stun.l.google.com:19302' },
-          { urls: 'stun:stun1.l.google.com:19302' },
-          { urls: 'stun:stun2.l.google.com:19302' },
-          { urls: 'stun:stun3.l.google.com:19302' },
-          { urls: 'stun:stun4.l.google.com:19302' },
-          { urls: 'stun:stun.nextcloud.com:443' },
-        ],
+        iceServers: ICE_SERVERS,
       },
     });
 
     this.peer.on('open', (peerId: string) => {
-      this.peerId$.next(peerId);
+      this.localPeerId$.next(peerId);
     });
 
-    this.peer.on('call', (connection: any) => {
-      this.incomingCall$.next(connection);
-    });
-
-    this.peer.on('error', (error: Error) => {
-      console.log('[ERROR] in peer', error);
+    this.peer.on('call', (connection: MediaConnection) => {
+      this.setRemoteConnection(connection);
+      this.incomingCall$.next(connection.metadata);
     });
   }
 
-  call(
-    peerId: string,
-    mediaStream: MediaStream,
-    metadata: any = {}
-  ): Promise<MediaStream> {
-    return new Promise<MediaStream>((resolve) => {
-      const call = this.peer.call(peerId, mediaStream, {
+  public async answer(): Promise<void> {
+    try {
+      const localStream = await this.createLocalStream();
+
+      const connection = this.remoteConnection$.getValue();
+      connection.answer(localStream);
+
+      await this.waitForRemoteStream();
+    } catch (error) {
+      this.loggerService.error('NewPeer')('Error in answer', error);
+    }
+  }
+
+  public async call(peerId: string, metadata: CallMetadata): Promise<void> {
+    try {
+      const localStream = await this.createLocalStream();
+
+      const connection = this.peer.call(peerId, localStream, {
         metadata,
       });
+      this.setRemoteConnection(connection);
 
-      call.on('stream', (stream: any) => {
-        resolve(stream);
+      await this.waitForRemoteStream();
+    } catch (error) {
+      this.loggerService.error('NewPeer')('Error in call', error);
+    }
+  }
+
+  public decline(): void {
+    const connection = this.remoteConnection$.getValue();
+    connection.close();
+  }
+
+  private async createLocalStream(): Promise<MediaStream> {
+    try {
+      const localStream = await this.mediaService.createUserMediaStream();
+      this.localStream$.next(localStream);
+
+      return localStream;
+    } catch (error) {
+      this.loggerService.error('NewPeer')('Error in creating local stream');
+      throw error;
+    }
+  }
+
+  private async waitForRemoteStream(): Promise<void> {
+    const connection = this.remoteConnection$.getValue();
+
+    return await new Promise<void>((resolve, reject) => {
+      connection.on('stream', (remoteStream: MediaStream) => {
+        this.loggerService.log('NewPeer')('Connection accepted!');
+
+        this.remoteStream$.next(remoteStream);
+
+        resolve();
+      });
+
+      connection.on('close', () => {
+        const error = new Error('Connection closed');
+
+        this.loggerService.error('NewPeer')(error.message);
+
+        reject(error);
       });
     });
+  }
+
+  private setRemoteConnection(connection: MediaConnection) {
+    if (!this.remoteConnection$) {
+      this.remoteConnection$ = new BehaviorSubject(connection);
+    } else {
+      this.remoteConnection$.next(connection);
+    }
   }
 }

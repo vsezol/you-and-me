@@ -11,10 +11,8 @@ import { ContactsPageComponent } from './contacts-page/contacts-page.component';
 import { ContactCardComponent } from './contact-card/contact-card.component';
 import { CallAlertComponent } from './call-alert/call-alert.component';
 import { HttpClientModule } from '@angular/common/http';
-import { MediaModule } from '../media/media.module';
 import { CallAlertDialogDirective } from './call-alert-dialog.directive';
-import { NewPeerModule } from '../new-peer/new-peer.module';
-import { PeerModule } from '../peer/peer.module';
+import { LoggerModule } from '../logger/logger.module';
 
 @NgModule({
   declarations: [
@@ -31,10 +29,8 @@ import { PeerModule } from '../peer/peer.module';
     MaterialModule,
     ContactsPageRoutingModule,
     UsersModule,
-    NewPeerModule,
-    PeerModule,
-    MediaModule,
     HttpClientModule,
+    LoggerModule,
   ],
 })
 export class ContactsPageModule {}

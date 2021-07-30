@@ -4,10 +4,10 @@ import { takeUntil } from 'rxjs/operators';
 
 import { UsersService } from '../../users/users.service';
 import { ServerUser, User } from '../../../common';
-import { PeerIdService } from '../../peer/peer-id.service';
+import { LoggerService } from '../../logger/logger.service';
+import { Router } from '@angular/router';
 import { PeerService } from '../../peer/peer.service';
-import { MediaService } from '../../media/media.service';
-import { NewPeerService } from '../../new-peer/new-peer.service';
+import { PeerIdService } from '../../peer/peer-id.service';
 
 @Component({
   selector: 'app-contacts-page',
@@ -18,9 +18,9 @@ export class ContactsPageComponent implements OnInit, OnDestroy {
   constructor(
     private usersService: UsersService,
     private peerIdService: PeerIdService,
-    private newPeerService: NewPeerService,
-    // private peerService: PeerService,
-    private mediaService: MediaService
+    private peerService: PeerService,
+    private loggerService: LoggerService,
+    private router: Router
   ) {}
 
   destroyed$: Subject<void> = new Subject();
@@ -44,7 +44,7 @@ export class ContactsPageComponent implements OnInit, OnDestroy {
         this.users = users;
       });
 
-    this.newPeerService.localPeerId$
+    this.peerService.localPeerId$
       .pipe(takeUntil(this.destroyed$))
       .subscribe((peerId) => {
         if (!peerId) return;
@@ -67,13 +67,17 @@ export class ContactsPageComponent implements OnInit, OnDestroy {
       .subscribe(async (peerId) => {
         this.logUserPeerId(username, peerId);
 
-        await this.newPeerService.call(peerId, {
+        await this.peerService.call(peerId, {
           caller: { name: this.currentUser.username },
         });
+
+        this.router.navigate(['chat']);
       });
   }
 
   private logUserPeerId(username: string, peerId: string) {
-    console.log(`user ${username} has peerId ${peerId}`);
+    this.loggerService.log('ContactsPage')(
+      `user ${username} has peerId ${peerId}`
+    );
   }
 }
