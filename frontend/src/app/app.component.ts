@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { DynamicStyleLoadingService } from './services/dynamic-style-loading.service';
+import { DynamicStyleLoadingService } from './core/services/dynamic-style-loading.service';
 
 enum ThemeBundleNames {
   LIGHT = 'light-theme',

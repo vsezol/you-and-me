@@ -1,16 +1,5 @@
 import { Injectable } from '@nestjs/common';
-
-export interface User {
-  username: string;
-}
-
-export interface UserWithPassword extends User {
-  password: string;
-}
-
-export interface UserInDB extends UserWithPassword {
-  userId: number;
-}
+import { UserInDB, UserWithPassword } from '../common';
 
 @Injectable()
 export class UsersService {
@@ -30,10 +19,26 @@ export class UsersService {
       username: 'vsezol',
       password: '123456',
     },
+    {
+      userId: 4,
+      username: 'test1',
+      password: '123456',
+    },
+    {
+      userId: 5,
+      username: 'test2',
+      password: '123456',
+    },
   ];
 
   async findOne(username: string): Promise<UserInDB | undefined> {
     return this.users.find((user) => user.username === username);
+  }
+
+  async findByCondition(
+    condition: (user: UserInDB) => boolean
+  ): Promise<UserInDB[]> {
+    return this.users.filter((user) => condition(user));
   }
 
   async insertOne(user: UserWithPassword): Promise<UserInDB> {

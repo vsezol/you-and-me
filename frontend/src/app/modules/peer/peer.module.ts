@@ -1,9 +1,13 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { PeerService } from './services/peer.service';
+
+import { PeerService } from './peer.service';
+import { LoggerModule } from '../logger/logger.module';
+import { PeerIdService } from './peer-id.service';
+import { MediaService } from './media.service';
 
 @NgModule({
-  imports: [CommonModule],
-  providers: [PeerService],
+  declarations: [],
+  imports: [LoggerModule],
+  providers: [PeerService, PeerIdService, MediaService],
 })
 export class PeerModule {}
