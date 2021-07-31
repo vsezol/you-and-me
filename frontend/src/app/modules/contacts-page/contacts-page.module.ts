@@ -13,6 +13,7 @@ import { CallAlertComponent } from './call-alert/call-alert.component';
 import { HttpClientModule } from '@angular/common/http';
 import { CallAlertDialogDirective } from './call-alert-dialog.directive';
 import { LoggerModule } from '../logger/logger.module';
+import { AuthModule } from '../auth/auth.module';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,6 @@ import { LoggerModule } from '../logger/logger.module';
 
     MaterialModule,
     ContactsPageRoutingModule,
-    UsersModule,
     HttpClientModule,
     LoggerModule,
   ],

@@ -1,8 +1,11 @@
 .container {
-  //background-color: var(--bg-color);
   padding: 10px;
   box-sizing: border-box;
   width: 100vw;
   height: 100vh;
   overflow: hidden;
+}
+
+.spacer {
+  flex: 1 1 auto;
 }

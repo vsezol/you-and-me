@@ -1,38 +1,15 @@
-import { Component } from '@angular/core';
-import { DynamicStyleLoadingService } from './core/services/dynamic-style-loading.service';
-
-enum ThemeBundleNames {
-  LIGHT = 'light-theme',
-  DARK = 'dark-theme',
-}
+import { Component, OnInit } from '@angular/core';
+import { ThemeService } from './core/services/theme.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent {
-  public isDarkMode = true;
-
-  get themeBundleName() {
-    return this.isDarkMode ? ThemeBundleNames.DARK : ThemeBundleNames.LIGHT;
-  }
-
-  constructor(private dynamicStyleLoadingService: DynamicStyleLoadingService) {}
+export class AppComponent implements OnInit {
+  constructor(private themeService: ThemeService) {}
 
   ngOnInit(): void {
-    this.setThemeModeToDocument();
-  }
-
-  onToggleTheme(): void {
-    this.isDarkMode = !this.isDarkMode;
-    this.setThemeModeToDocument();
-  }
-
-  setThemeModeToDocument(): void {
-    this.dynamicStyleLoadingService.loadStyle(
-      this.themeBundleName,
-      'dynamic-theme-style'
-    );
+    this.themeService.initTheme();
   }
 }
