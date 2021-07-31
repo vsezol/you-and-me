@@ -7,7 +7,21 @@ import { ThemeService } from '../../services/theme.service';
   styleUrls: ['./main-layout.component.scss'],
 })
 export class MainLayoutComponent implements OnInit {
+  public isShowSideNav = false;
+
   constructor(public themeService: ThemeService) {}
 
   ngOnInit(): void {}
+
+  public toggleSideNav(): void {
+    this.isShowSideNav = !this.isShowSideNav;
+  }
+
+  public openSideNav(): void {
+    this.isShowSideNav = true;
+  }
+
+  public closeSideNav(): void {
+    this.isShowSideNav = false;
+  }
 }

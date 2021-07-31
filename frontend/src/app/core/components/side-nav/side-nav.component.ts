@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-side-nav',
@@ -6,11 +6,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./side-nav.component.scss'],
 })
 export class SideNavComponent {
-  public isShowSideNav = false;
-
-  constructor() {}
-
-  toggleSideNav(): void {
-    this.isShowSideNav = !this.isShowSideNav;
-  }
+  @Input() isOpened = false;
+  @Output() isOpenedChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 }
