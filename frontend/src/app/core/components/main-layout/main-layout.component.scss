@@ -1,9 +1,8 @@
 .container {
   padding: 10px;
   box-sizing: border-box;
-  width: 100vw;
-  height: 100vh;
   overflow: hidden;
+  min-height: 100vh;
 }
 
 .spacer {
