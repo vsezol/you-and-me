@@ -8,8 +8,8 @@ import { PeerModule } from './peer/peer.module';
 import { AppController } from './app.controller';
 import { PeerController } from './peer/peer.controller';
 
-import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
+import { UserModel } from './users/users.model';
 
 @Module({
   imports: [
@@ -17,7 +17,7 @@ import { ConfigModule } from '@nestjs/config';
     UsersModule,
     PeerModule,
     ConfigModule.forRoot({
-      envFilePath: `.${process.env.NODE_ENV}.env`,
+      envFilePath: `.env.${process.env.NODE_ENV}`,
     }),
     SequelizeModule.forRoot({
       dialect: 'postgres',
@@ -26,11 +26,10 @@ import { ConfigModule } from '@nestjs/config';
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB,
-      models: [],
+      models: [UserModel],
       autoLoadModels: true,
     }),
   ],
   controllers: [AppController, PeerController],
-  providers: [AppService],
 })
 export class AppModule {}
