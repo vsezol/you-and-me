@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { EXPIRES_IN } from './constants';
-import { User, UserInDB, UserWithPassword } from '../common';
 import { UsersService } from '../users/users.service';
+import { UserModel } from '../users/users.model';
+import { CreateUserAttributes } from '../common';
 
 @Injectable()
 export class AuthService {
@@ -11,25 +12,26 @@ export class AuthService {
     private jwtService: JwtService
   ) {}
 
-  async validateUser(
-    username: UserInDB['username'],
-    password: UserInDB['password']
-  ): Promise<User> {
-    const user = await this.usersService.findOne(username);
-    if (user && user.password === password) {
-      const { password, ...result } = user;
-      return result;
+  async validateUser({
+    username,
+    password,
+  }: CreateUserAttributes): Promise<UserModel> {
+    const userModel = await this.usersService.findOneByUsername(username);
+
+    if (userModel && userModel.password === password) {
+      return userModel;
     }
+
     return null;
   }
 
-  async register(user: UserWithPassword) {
-    const userInDB = await this.usersService.insertOne(user);
-    return this.login(userInDB);
+  async register(user: CreateUserAttributes) {
+    const userModel = await this.usersService.createUser(user);
+    return this.login(userModel);
   }
 
-  async login(user: UserInDB) {
-    const payload = { username: user.username, sub: user.userId };
+  async login(userModel: UserModel) {
+    const payload = { username: userModel.username, sub: userModel.id };
     return {
       token: this.jwtService.sign(payload),
       expiresIn: EXPIRES_IN,

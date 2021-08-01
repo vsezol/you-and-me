@@ -1,11 +1,13 @@
-export interface User {
+export interface CreateUserAttributes {
   username: string;
-}
-
-export interface UserWithPassword extends User {
   password: string;
 }
 
-export interface UserInDB extends UserWithPassword {
-  userId: number;
+export interface ClientUser {
+  username: string;
+  id: number;
+}
+
+export interface DatabaseUser extends ClientUser {
+  password: string;
 }

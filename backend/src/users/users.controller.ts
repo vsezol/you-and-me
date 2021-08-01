@@ -1,7 +1,14 @@
-import { Controller, Get, Query, Request, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  ParseBoolPipe,
+  Query,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import { UserInDB } from '../common';
 import { UsersService } from './users.service';
+import { UserModel } from './users.model';
 
 @Controller('users')
 export class UsersController {
@@ -9,24 +16,20 @@ export class UsersController {
 
   @UseGuards(JwtAuthGuard)
   @Get('current')
-  getCurrentUser(@Request() req): UserInDB {
+  getCurrentUser(@Request() req: { user: UserModel }) {
     return req.user;
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('all')
   async getAllUsers(
-    @Request() req,
-    @Query('withOutCurrent') withOutCurrent: string
-  ): Promise<UserInDB[]> {
-    const users = await this.usersService.findByCondition((user) => {
-      if (withOutCurrent === 'true') {
-        return user.username !== req.user.username;
-      } else {
-        return true;
-      }
-    });
-
-    return users;
+    @Request() req: { user: UserModel },
+    @Query('withOutCurrent', ParseBoolPipe) withOutCurrent: boolean
+  ): Promise<UserModel[]> {
+    if (withOutCurrent) {
+      return await this.usersService.findAllWithoutUsername(req.user.username);
+    } else {
+      return await this.usersService.findAll();
+    }
   }
 }

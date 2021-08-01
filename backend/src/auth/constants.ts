@@ -1,8 +1,8 @@
-export interface JWTContstants {
+export interface JWTConstants {
   secret: string;
 }
 
-export const jwtConstants: JWTContstants = {
+export const jwtConstants: JWTConstants = {
   secret: 'secretKey',
 };
 

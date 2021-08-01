@@ -1,21 +1,21 @@
-<mat-toolbar>
-  <button
-    mat-icon-button
-    class="example-icon"
-    aria-label="Example icon-button with menu icon"
-  >
-    <mat-icon>menu</mat-icon>
-  </button>
-  <span>You&Me</span>
-  <span class="spacer"></span>
+<div (swipeleft)="closeSideNav()" class="layout">
+  <app-side-nav [(isOpened)]="isShowSideNav">
+    <mat-toolbar>
+      <button mat-icon-button (click)="toggleSideNav()">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span>You&Me</span>
+      <span class="spacer"></span>
 
-  <app-theme-switcher
-    class="theme-switcher"
-    [isDark]="themeService.isDarkMode"
-    (toggle)="themeService.toggleTheme()"
-  ></app-theme-switcher>
-</mat-toolbar>
+      <app-theme-switcher
+        class="theme-switcher"
+        [isDark]="themeService.isDarkMode"
+        (toggle)="themeService.toggleTheme()"
+      ></app-theme-switcher>
+    </mat-toolbar>
 
-<div class="container mat-app-background">
-  <router-outlet></router-outlet>
+    <div class="container mat-app-background" (swiperight)="openSideNav()">
+      <router-outlet></router-outlet>
+    </div>
+  </app-side-nav>
 </div>

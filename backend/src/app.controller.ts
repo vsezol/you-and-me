@@ -1,8 +1,9 @@
-import { Controller, Get, Request, Post, UseGuards } from '@nestjs/common';
+import { Controller, Request, Post, UseGuards } from '@nestjs/common';
 import { LocalAuthGuard } from './auth/local-auth.guard';
 import { AuthService } from './auth/auth.service';
 import { Body } from '@nestjs/common';
-import { UserWithPassword } from './common';
+import { CreateUserAttributes } from './common';
+import { UserModel } from './users/users.model';
 
 @Controller()
 export class AppController {
@@ -10,12 +11,12 @@ export class AppController {
 
   @UseGuards(LocalAuthGuard)
   @Post('auth/login')
-  async login(@Request() req) {
+  async login(@Request() req: { user: UserModel }) {
     return this.authService.login(req.user);
   }
 
   @Post('auth/register')
-  async register(@Body() user: UserWithPassword) {
+  async register(@Body() user: CreateUserAttributes) {
     return this.authService.register(user);
   }
 }

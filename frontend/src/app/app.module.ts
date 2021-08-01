@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, HammerModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -12,9 +12,15 @@ import { PeerModule } from './modules/peer/peer.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { SideNavComponent } from './core/components/side-nav/side-nav.component';
 import { UsersModule } from './modules/users/users.module';
+import { HAMMER_CONFIG_PROVIDER } from './core/hammer.config';
 
 @NgModule({
-  declarations: [AppComponent, MainLayoutComponent, ThemeSwitcherComponent, SideNavComponent],
+  declarations: [
+    AppComponent,
+    MainLayoutComponent,
+    ThemeSwitcherComponent,
+    SideNavComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -22,9 +28,10 @@ import { UsersModule } from './modules/users/users.module';
     MaterialModule,
     PeerModule,
     AuthModule,
-    UsersModule
+    UsersModule,
+    HammerModule,
   ],
-  providers: [],
+  providers: [HAMMER_CONFIG_PROVIDER],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
