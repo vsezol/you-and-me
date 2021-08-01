@@ -1,10 +1,15 @@
 import { Column, DataType, Model, Table } from 'sequelize-typescript';
 import { DatabaseUser, CreateUserAttributes } from '../common';
+import { ApiProperty } from '@nestjs/swagger';
 
 @Table({
   tableName: 'users',
 })
-export class UserModel extends Model<UserModel, CreateUserAttributes> implements DatabaseUser {
+export class UserModel
+  extends Model<UserModel, CreateUserAttributes>
+  implements DatabaseUser
+{
+  @ApiProperty({ example: 1, description: 'id' })
   @Column({
     type: DataType.INTEGER,
     unique: true,
@@ -13,6 +18,7 @@ export class UserModel extends Model<UserModel, CreateUserAttributes> implements
   })
   id: number;
 
+  @ApiProperty({ example: 'Anton', description: 'id' })
   @Column({
     type: DataType.STRING,
     unique: true,
@@ -20,6 +26,7 @@ export class UserModel extends Model<UserModel, CreateUserAttributes> implements
   })
   username: string;
 
+  @ApiProperty({ example: 'aboba123', description: 'password' })
   @Column({
     type: DataType.STRING,
     allowNull: false,

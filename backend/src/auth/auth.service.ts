@@ -5,6 +5,11 @@ import { UsersService } from '../users/users.service';
 import { UserModel } from '../users/users.model';
 import { CreateUserAttributes } from '../common';
 
+export interface AuthResponse {
+  token: string;
+  expiresIn: number;
+}
+
 @Injectable()
 export class AuthService {
   constructor(
