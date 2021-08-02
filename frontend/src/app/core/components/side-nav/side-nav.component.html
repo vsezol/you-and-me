@@ -5,7 +5,11 @@
     mode="push"
     class="side-nav"
   >
-    <div (swipeleft)="isOpenedChange.emit(false)" class="side-nav__wrapper">
+    <div
+      (swipeleft)="isOpenedChange.emit(false)"
+      class="side-nav__wrapper"
+      fxLayout="column"
+    >
       <ng-container *ngIf="currentUser">
         <mat-card
           class="profile mat-elevation-z0"
@@ -15,18 +19,12 @@
           <mat-card-title class="profile__title">
             {{ currentUser.username }}
           </mat-card-title>
-
-          <app-theme-switcher
-            class="theme-switcher"
-            [isDark]="themeService.isDarkMode"
-            (toggle)="themeService.toggleTheme()"
-          ></app-theme-switcher>
         </mat-card>
 
         <mat-divider></mat-divider>
       </ng-container>
 
-      <mat-nav-list>
+      <mat-nav-list fxFlex="grow">
         <ng-container *ngIf="authService.isAuthenticated(); else nonAuthBlock">
           <a mat-list-item [routerLink]="['/contacts']"> Contacts </a>
           <a mat-list-item (click)="authService.signOut()"> Sign out </a>
@@ -37,6 +35,15 @@
           <a mat-list-item [routerLink]="['/auth', 'sign-up']"> Sign up </a>
         </ng-template>
       </mat-nav-list>
+
+      <mat-divider></mat-divider>
+
+      <div fxLayout="row" fxLayoutAlign="end" style="padding: 5px">
+        <app-theme-switcher
+          [isDark]="themeService.isDarkMode"
+          (toggle)="themeService.toggleTheme()"
+        ></app-theme-switcher>
+      </div>
     </div>
   </mat-drawer>
 
