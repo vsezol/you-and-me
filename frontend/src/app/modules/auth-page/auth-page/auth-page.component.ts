@@ -1,4 +1,4 @@
-import { map, takeUntil, tap } from 'rxjs/operators';
+import { map, takeUntil } from 'rxjs/operators';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
 import {
@@ -14,7 +14,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService, AuthResponse } from 'src/app/modules/auth/auth.service';
 import { ValidationErrorsService } from '../validation-errors.service';
 import { AuthTypeNames } from '../auth-page-routing.module';
-import { UserWithPassword } from '../../../common';
+import { CreateUserProps } from '../../../common';
 
 enum ControlNames {
   USERNAME = 'username',
@@ -97,7 +97,7 @@ export class AuthPageComponent implements OnInit, OnDestroy {
 
   public handleSubmit() {
     if (this.formGroup.valid) {
-      const user: UserWithPassword = {
+      const user: CreateUserProps = {
         username: this.formGroup.value.username,
         password: this.formGroup.value.password,
       };

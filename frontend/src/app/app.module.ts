@@ -13,6 +13,8 @@ import { AuthModule } from './modules/auth/auth.module';
 import { SideNavComponent } from './core/components/side-nav/side-nav.component';
 import { UsersModule } from './modules/users/users.module';
 import { HAMMER_CONFIG_PROVIDER } from './core/hammer.config';
+import { ToolbarComponent } from './core/components/toolbar/toolbar.component';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   declarations: [
@@ -20,6 +22,7 @@ import { HAMMER_CONFIG_PROVIDER } from './core/hammer.config';
     MainLayoutComponent,
     ThemeSwitcherComponent,
     SideNavComponent,
+    ToolbarComponent,
   ],
   imports: [
     BrowserModule,
@@ -30,6 +33,7 @@ import { HAMMER_CONFIG_PROVIDER } from './core/hammer.config';
     AuthModule,
     UsersModule,
     HammerModule,
+    FlexLayoutModule,
   ],
   providers: [HAMMER_CONFIG_PROVIDER],
   bootstrap: [AppComponent],

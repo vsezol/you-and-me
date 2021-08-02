@@ -1,11 +1,11 @@
-export interface User {
+interface User {
   username: string;
 }
 
 export interface ServerUser extends User {
-  userId: string;
+  id: string;
 }
 
-export interface UserWithPassword extends User {
+export interface CreateUserProps extends User {
   password: string;
 }

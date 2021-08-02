@@ -6,10 +6,36 @@
     class="side-nav"
   >
     <div (swipeleft)="isOpenedChange.emit(false)" class="side-nav__wrapper">
+      <ng-container *ngIf="currentUser">
+        <mat-card
+          class="profile mat-elevation-z0"
+          fxLayout="row"
+          fxLayoutAlign="space-between center"
+        >
+          <mat-card-title class="profile__title">
+            {{ currentUser.username }}
+          </mat-card-title>
+
+          <app-theme-switcher
+            class="theme-switcher"
+            [isDark]="themeService.isDarkMode"
+            (toggle)="themeService.toggleTheme()"
+          ></app-theme-switcher>
+        </mat-card>
+
+        <mat-divider></mat-divider>
+      </ng-container>
+
       <mat-nav-list>
-        <a mat-list-item>Sign in</a>
-        <a mat-list-item>Sign up</a>
-        <a mat-list-item>Contacts</a>
+        <ng-container *ngIf="authService.isAuthenticated(); else nonAuthBlock">
+          <a mat-list-item [routerLink]="['/contacts']"> Contacts </a>
+          <a mat-list-item (click)="authService.signOut()"> Sign out </a>
+        </ng-container>
+
+        <ng-template #nonAuthBlock>
+          <a mat-list-item [routerLink]="['/auth', 'sign-in']"> Sign in </a>
+          <a mat-list-item [routerLink]="['/auth', 'sign-up']"> Sign up </a>
+        </ng-template>
       </mat-nav-list>
     </div>
   </mat-drawer>

@@ -8,7 +8,8 @@ import {
   SomethingWentWrongError,
   UnauthorizedError,
 } from '../../common/errors';
-import { UserWithPassword } from '../../common';
+import { CreateUserProps } from '../../common';
+import { Router } from '@angular/router';
 
 export interface AuthResponse {
   token: string;
@@ -26,7 +27,7 @@ const AUTH_STORAGE_KEY = 'auth-data';
 export class AuthService {
   private apiUrl = environment.apiUrl;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   public isAuthenticated(): boolean {
     const { token, expirationDate } = this.getAuthData();
@@ -37,11 +38,12 @@ export class AuthService {
   public signOut(): Promise<void> {
     return new Promise((res) => {
       this.clearToken();
+      this.router.navigate(['auth']);
       res();
     });
   }
 
-  public signUp(user: UserWithPassword): Observable<AuthResponse> {
+  public signUp(user: CreateUserProps): Observable<AuthResponse> {
     return this.fetchJWTToken('register', user).pipe(
       catchError((err: HttpErrorResponse) => {
         console.log('signUp', err);
@@ -50,7 +52,7 @@ export class AuthService {
     );
   }
 
-  public signIn(user: UserWithPassword): Observable<AuthResponse> {
+  public signIn(user: CreateUserProps): Observable<AuthResponse> {
     return this.fetchJWTToken('login', user).pipe(
       catchError((err: HttpErrorResponse) => {
         switch (err.status) {
@@ -68,7 +70,7 @@ export class AuthService {
 
   private fetchJWTToken(
     url: string,
-    user: UserWithPassword
+    user: CreateUserProps
   ): Observable<AuthResponse> {
     return this.http
       .post<AuthResponse>(`${this.apiUrl}/auth/${url}`, user)

@@ -3,7 +3,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { UsersService } from '../../users/users.service';
-import { ServerUser, User } from '../../../common';
+import { ServerUser } from '../../../common';
 import { LoggerService } from '../../logger/logger.service';
 import { Router } from '@angular/router';
 import { PeerService } from '../../peer/peer.service';
@@ -25,7 +25,7 @@ export class ContactsPageComponent implements OnInit, OnDestroy {
 
   destroyed$: Subject<void> = new Subject();
 
-  currentUser!: User;
+  currentUser!: ServerUser;
 
   users!: ServerUser[];
 
