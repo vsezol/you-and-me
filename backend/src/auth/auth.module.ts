@@ -8,6 +8,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { EXPIRES_IN, jwtConstants } from './constants';
 
 import { UsersModule } from '../users/users.module';
+import { AuthController } from './auth.controller';
 
 @Module({
   imports: [
@@ -19,6 +20,6 @@ import { UsersModule } from '../users/users.module';
     }),
   ],
   providers: [AuthService, LocalStrategy, JwtStrategy],
-  exports: [AuthService],
+  controllers: [AuthController],
 })
 export class AuthModule {}

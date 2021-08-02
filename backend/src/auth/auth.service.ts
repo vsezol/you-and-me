@@ -4,11 +4,7 @@ import { EXPIRES_IN } from './constants';
 import { UsersService } from '../users/users.service';
 import { UserModel } from '../users/users.model';
 import { CreateUserAttributes } from '../common';
-
-export interface AuthResponse {
-  token: string;
-  expiresIn: number;
-}
+import { AuthResponseDto } from './dto/auth-response.dto';
 
 @Injectable()
 export class AuthService {
@@ -30,12 +26,12 @@ export class AuthService {
     return null;
   }
 
-  async register(user: CreateUserAttributes) {
+  async register(user: CreateUserAttributes): Promise<AuthResponseDto> {
     const userModel = await this.usersService.createUser(user);
     return this.login(userModel);
   }
 
-  async login(userModel: UserModel) {
+  async login(userModel: UserModel): Promise<AuthResponseDto> {
     const payload = { username: userModel.username, sub: userModel.id };
     return {
       token: this.jwtService.sign(payload),

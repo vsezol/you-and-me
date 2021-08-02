@@ -8,7 +8,9 @@ import {
 } from '@nestjs/common';
 import { PeerService } from './peer.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Peer')
 @Controller('peer')
 export class PeerController {
   constructor(private peerService: PeerService) {}
