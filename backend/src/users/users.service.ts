@@ -19,11 +19,14 @@ export class UsersService {
   }
 
   public async findAll(): Promise<UserModel[]> {
-    return await this.userRepository.findAll();
+    return await this.userRepository.findAll({
+      attributes: ['id', 'username'],
+    });
   }
 
   public async findAllWithoutUsername(username: string): Promise<UserModel[]> {
     return await this.userRepository.findAll({
+      attributes: ['id', 'username'],
       where: {
         username: {
           [Op.not]: username,
