@@ -70,8 +70,6 @@ export class ContactsPageComponent implements OnInit, OnDestroy {
         await this.peerService.call(peerId, {
           caller: { name: this.currentUser.username },
         });
-
-        this.router.navigate(['chat']);
       });
   }
 

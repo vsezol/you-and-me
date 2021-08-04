@@ -1,26 +1,20 @@
-<app-contact-card *ngIf="currentUser" [username]="currentUser.username">
-  <button
-    action
-    mat-mini-fab
-    color="primary"
-    [cdkCopyToClipboard]="currentUser.username"
-  >
-    <mat-icon>content_copy</mat-icon>
-  </button>
-</app-contact-card>
+<div class="contacts" fxLayout="row">
+  <div *ngIf="users && users.length > 0" class="contacts__list" fxFlex="30">
+    <app-contact-card
+      *ngFor="let user of users"
+      [username]="user.username"
+      margin="0px 0px 10px 0px"
+    >
+      <button
+        action
+        mat-mini-fab
+        color="primary"
+        (click)="onCall(user.username)"
+      >
+        <mat-icon>call</mat-icon>
+      </button>
+    </app-contact-card>
+  </div>
 
-<mat-divider style="margin: 10px 0px"></mat-divider>
-
-<ng-container *ngIf="users && users.length > 0">
-  <app-contact-card
-    *ngFor="let user of users"
-    [username]="user.username"
-    margin="10px 0px"
-  >
-    <button action mat-mini-fab color="primary" (click)="onCall(user.username)">
-      <mat-icon>call</mat-icon>
-    </button>
-  </app-contact-card>
-</ng-container>
-
-<app-call-alert-dialog></app-call-alert-dialog>
+  <app-call-alert-dialog></app-call-alert-dialog>
+</div>

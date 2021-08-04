@@ -2,10 +2,10 @@ import { Component } from '@angular/core';
 import { PeerService } from '../../peer/peer.service';
 
 @Component({
-  selector: 'app-chat-page',
-  templateUrl: './chat-page.component.html',
-  styleUrls: ['./chat-page.component.scss'],
+  selector: 'app-chat',
+  templateUrl: './chat.component.html',
+  styleUrls: ['./chat.component.scss'],
 })
-export class ChatPageComponent {
+export class ChatComponent {
   constructor(public peerService: PeerService) {}
 }
