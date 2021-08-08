@@ -15,6 +15,7 @@ import { ContactCardComponent } from './contact-card/contact-card.component';
 import { CallAlertComponent } from './call-alert/call-alert.component';
 
 import { CallAlertDialogDirective } from './call-alert-dialog.directive';
+import { VoidChatMessageComponent } from './void-chat-message/void-chat-message.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { CallAlertDialogDirective } from './call-alert-dialog.directive';
     ContactCardComponent,
     CallAlertComponent,
     CallAlertDialogDirective,
+    VoidChatMessageComponent,
   ],
   imports: [
     CommonModule,

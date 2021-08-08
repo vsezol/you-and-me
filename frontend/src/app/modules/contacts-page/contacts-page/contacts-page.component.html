@@ -1,24 +1,21 @@
 <div class="contacts" fxLayout="row" fxLayoutGap="5px">
   <div *ngIf="users && users.length > 0" class="contacts__list" fxFlex="30">
-    <cdk-virtual-scroll-viewport itemSize="72" [ngStyle]="{ height: '100%' }">
+    <cdk-virtual-scroll-viewport itemSize="52" [ngStyle]="{ height: '100%' }">
       <div
         *cdkVirtualFor="let user of users; index as index"
+        [style.marginBottom]="index + 1 < users.length ? '10px' : '0px'"
       >
-        <app-contact-card [username]="user.username">
-          <button
-            action
-            mat-mini-fab
-            color="primary"
-            (click)="onCall(user.username)"
-          >
-            <mat-icon>call</mat-icon>
-          </button>
+        <app-contact-card
+          [username]="user.username"
+          (click)="openChat(user)"
+          [isActive]="(activeChatName | async) === user.username"
+        >
         </app-contact-card>
       </div>
     </cdk-virtual-scroll-viewport>
   </div>
   <div fxFlex="70">
-    <app-chat></app-chat>
+    <router-outlet></router-outlet>
   </div>
 
   <app-call-alert-dialog></app-call-alert-dialog>

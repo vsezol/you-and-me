@@ -13,15 +13,9 @@
     }
   }
 
-  .contact-card.mat-card {
-    border-radius: 0px;
-    outline: none;
-  }
-
   .contact-card.active {
     background-color: mat.get-color-from-palette(
-      map.get($color-config, background),
-      selected-button
+      map.get($color-config, primary)
     );
   }
 }

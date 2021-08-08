@@ -1,12 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { map, takeUntil } from 'rxjs/operators';
 
 import { UsersService } from '../../users/users.service';
 import { ServerUser } from '../../../common';
 import { LoggerService } from '../../logger/logger.service';
 import { PeerService } from '../../peer/peer.service';
 import { PeerIdService } from '../../peer/peer-id.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-contacts-page',
@@ -18,14 +19,18 @@ export class ContactsPageComponent implements OnInit, OnDestroy {
     private usersService: UsersService,
     private peerIdService: PeerIdService,
     private peerService: PeerService,
-    private loggerService: LoggerService
+    private loggerService: LoggerService,
+    private router: Router,
+    private route: ActivatedRoute
   ) {}
 
-  destroyed$: Subject<void> = new Subject();
+  private destroyed$: Subject<void> = new Subject();
 
-  currentUser!: ServerUser;
+  private currentUser!: ServerUser;
 
-  users!: ServerUser[];
+  public users!: ServerUser[];
+
+  public activeChatName!: Observable<string>;
 
   ngOnInit(): void {
     this.usersService
@@ -51,6 +56,11 @@ export class ContactsPageComponent implements OnInit, OnDestroy {
           this.logUserPeerId(this.currentUser.username, peerId);
         });
       });
+
+    this.activeChatName = this.route.firstChild?.params.pipe(
+      takeUntil(this.destroyed$),
+      map((params) => params.username)
+    )!;
   }
 
   ngOnDestroy() {
@@ -58,7 +68,11 @@ export class ContactsPageComponent implements OnInit, OnDestroy {
     this.destroyed$.complete();
   }
 
-  onCall(username: string) {
+  public openChat(user: ServerUser): void {
+    this.router.navigate(['/contacts', user.username]);
+  }
+
+  public onCall(username: string) {
     this.peerIdService
       .getPeerIdByUsername(username)
       .pipe(takeUntil(this.destroyed$))

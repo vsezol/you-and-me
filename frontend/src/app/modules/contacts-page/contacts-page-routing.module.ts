@@ -4,12 +4,33 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { MainLayoutComponent } from '../../core/components/main-layout/main-layout.component';
 import { ContactsPageComponent } from './contacts-page/contacts-page.component';
+import { ChatComponent } from '../chat/chat/chat.component';
+import { VoidChatMessageComponent } from './void-chat-message/void-chat-message.component';
 
 const routes: Routes = [
   {
     path: '',
     component: MainLayoutComponent,
-    children: [{ path: '', component: ContactsPageComponent }],
+    children: [
+      {
+        path: '',
+        component: ContactsPageComponent,
+        children: [
+          {
+            path: '',
+            component: VoidChatMessageComponent,
+          },
+          {
+            path: ':username',
+            component: ChatComponent,
+          },
+          {
+            path: '**',
+            redirectTo: '',
+          },
+        ],
+      },
+    ],
   },
 ];
 
