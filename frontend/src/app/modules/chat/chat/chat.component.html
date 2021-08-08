@@ -1,28 +1,16 @@
 <div fxLayout="column" fxLayoutGap="10px" class="chat">
-  <mat-toolbar>
-    <span>Chat with Username</span>
-    <span class="spacer"></span>
-
-    <button mat-icon-button color="primary">
-      <mat-icon>videocam</mat-icon>
-    </button>
-
-    <button mat-icon-button color="primary">
-      <mat-icon>call</mat-icon>
-    </button>
-  </mat-toolbar>
   <div fxFlex="grow" fxLayout="column" class="chat-messages">
     <mat-card
       fxFlexAlign="start"
-      *ngFor="let item of [].constructor(5); index as index"
-      [style.marginBottom]="index + 1 < 5 ? '10px' : '0px'"
+      *ngFor="let item of [].constructor(10); index as index"
+      [style.marginBottom]="index + 1 < 10 ? '10px' : '0px'"
     >
       Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci
       asperiores aut, et ipsa laboriosam odio provident quos suscipit ut vero!
     </mat-card>
   </div>
 
-  <div fxFlex>
+  <mat-card fxFlex style="padding: 10px 10px">
     <form class="chat-form" fxLayout="row" fxLayoutAlign="center center">
       <mat-form-field class="chat-form__control" appearance="outline">
         <textarea
@@ -37,5 +25,5 @@
         <mat-icon>send</mat-icon>
       </button>
     </form>
-  </div>
+  </mat-card>
 </div>

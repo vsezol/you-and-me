@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { map, takeUntil } from 'rxjs/operators';
+import { map, takeUntil, tap } from 'rxjs/operators';
 
 import { UsersService } from '../../users/users.service';
 import { ServerUser } from '../../../common';
@@ -8,6 +8,7 @@ import { LoggerService } from '../../logger/logger.service';
 import { PeerService } from '../../peer/peer.service';
 import { PeerIdService } from '../../peer/peer-id.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToolbarService } from '../../../core/services/toolbar.service';
 
 @Component({
   selector: 'app-contacts-page',
@@ -21,7 +22,8 @@ export class ContactsPageComponent implements OnInit, OnDestroy {
     private peerService: PeerService,
     private loggerService: LoggerService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private toolbarService: ToolbarService
   ) {}
 
   private destroyed$: Subject<void> = new Subject();
@@ -59,16 +61,19 @@ export class ContactsPageComponent implements OnInit, OnDestroy {
 
     this.activeChatName = this.route.firstChild?.params.pipe(
       takeUntil(this.destroyed$),
-      map((params) => params.username)
+      map((params) => params.username),
+      tap((username) => this.toolbarService.setLabel(username))
     )!;
   }
 
   ngOnDestroy() {
     this.destroyed$.next();
     this.destroyed$.complete();
+    this.toolbarService.clearLabel();
   }
 
   public openChat(user: ServerUser): void {
+    this.toolbarService.setLabel(user.username);
     this.router.navigate(['/contacts', user.username]);
   }
 

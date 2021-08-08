@@ -2,6 +2,13 @@
   <button mat-icon-button (click)="toggleMenu.emit()">
     <mat-icon>menu</mat-icon>
   </button>
-  <span>You&Me</span>
+  <span>{{ toolbarService.getLabel() || 'You&Me' }}</span>
   <span class="spacer"></span>
+  <button
+    *ngFor="let action of toolbarService.getActions()"
+    mat-icon-button
+    color="primary"
+  >
+    <mat-icon>{{ action.icon }}</mat-icon>
+  </button>
 </mat-toolbar>
