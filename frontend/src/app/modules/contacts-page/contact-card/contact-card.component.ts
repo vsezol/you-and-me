@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-contact-card',
@@ -8,6 +8,9 @@ import { Component, Input, OnInit } from '@angular/core';
 export class ContactCardComponent implements OnInit {
   @Input() username = '';
   @Input() margin = '';
+  @Input() isActive = false;
+
+  @Output() click: EventEmitter<void> = new EventEmitter<void>();
 
   constructor() {}
 

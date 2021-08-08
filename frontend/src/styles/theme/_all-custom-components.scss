@@ -1,6 +1,8 @@
 // custom components mixins
 @use '../../app/modules/auth-page/components/alert/alert.component.scss' as alert;
+@use '../../app/modules/contacts-page/contact-card/contact-card.component.scss' as contact-card;
 
 @mixin apply-theme($theme) {
   @include alert.theme($theme);
+  @include contact-card.theme($theme);
 }

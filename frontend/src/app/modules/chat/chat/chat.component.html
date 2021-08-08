@@ -1,16 +1,32 @@
-<div>
-  <app-grid>
-    <div first>
-      <app-video
-        class="video_local"
-        [stream$]="peerService.localStream$"
-      ></app-video>
-    </div>
-    <div second>
-      <app-video
-        class="video_remote"
-        [stream$]="peerService.remoteStream$"
-      ></app-video>
-    </div>
-  </app-grid>
+<div
+  fxLayout="column"
+  fxLayoutAlign="space-between"
+  fxLayoutGap="10px"
+  class="chat"
+>
+  <div fxFlex="grow" class="chat-messages">
+    <mat-card
+      *ngFor="let item of [].constructor(20); index as index"
+      [style.marginBottom]="index + 1 < 20 ? '5px' : '0px'"
+    >
+      text {{ item }}
+    </mat-card>
+  </div>
+
+  <div fxFlex>
+    <form class="chat-form" fxLayout="row" fxLayoutAlign="center center">
+      <mat-form-field class="chat-form__control" appearance="outline">
+        <textarea
+          matInput
+          cdkTextareaAutosize
+          cdkAutosizeMinRows="1"
+          cdkAutosizeMaxRows="4"
+          placeholder="Write a message..."
+        ></textarea>
+      </mat-form-field>
+      <button mat-icon-button>
+        <mat-icon>send</mat-icon>
+      </button>
+    </form>
+  </div>
 </div>

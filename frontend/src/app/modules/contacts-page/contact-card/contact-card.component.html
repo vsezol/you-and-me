@@ -1,4 +1,9 @@
-<mat-card [ngStyle]="{ margin: margin }">
+<mat-card
+  (click)="click.emit()"
+  [ngStyle]="{ margin: margin }"
+  class="contact-card mat-elevation-z0"
+  [class.active]="isActive"
+>
   <div fxLayout="row" fxLayoutAlign="space-between center">
     <mat-card-title style="margin: 0">{{ username }}</mat-card-title>
     <ng-content select="[action]"></ng-content>

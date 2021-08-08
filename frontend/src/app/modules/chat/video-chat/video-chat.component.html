@@ -1,0 +1,16 @@
+<div>
+  <app-grid>
+    <div first>
+      <app-video
+        class="video_local"
+        [stream$]="peerService.localStream$"
+      ></app-video>
+    </div>
+    <div second>
+      <app-video
+        class="video_remote"
+        [stream$]="peerService.remoteStream$"
+      ></app-video>
+    </div>
+  </app-grid>
+</div>

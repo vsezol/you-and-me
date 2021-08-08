@@ -1,14 +1,8 @@
-<div class="contacts" fxLayout="row">
-  <div
-    #contactsList
-    *ngIf="users && users.length > 0"
-    class="contacts__list"
-    fxFlex="30"
-  >
-    <cdk-virtual-scroll-viewport itemSize="82" [ngStyle]="{ height: '100%' }">
+<div class="contacts" fxLayout="row" fxLayoutGap="5px">
+  <div *ngIf="users && users.length > 0" class="contacts__list" fxFlex="30">
+    <cdk-virtual-scroll-viewport itemSize="72" [ngStyle]="{ height: '100%' }">
       <div
         *cdkVirtualFor="let user of users; index as index"
-        [style.marginBottom]="index + 1 < users.length ? '10px' : '0px'"
       >
         <app-contact-card [username]="user.username">
           <button
@@ -22,6 +16,9 @@
         </app-contact-card>
       </div>
     </cdk-virtual-scroll-viewport>
+  </div>
+  <div fxFlex="70">
+    <app-chat></app-chat>
   </div>
 
   <app-call-alert-dialog></app-call-alert-dialog>

@@ -1,0 +1,35 @@
+@use 'sass:map';
+@use '~@angular/material' as mat;
+
+@mixin contact-card($color-config) {
+  .contact-card {
+    cursor: pointer;
+
+    &:hover {
+      background-color: mat.get-color-from-palette(
+        map.get($color-config, background),
+        hover
+      );
+    }
+  }
+
+  .contact-card.mat-card {
+    border-radius: 0px;
+    outline: none;
+  }
+
+  .contact-card.active {
+    background-color: mat.get-color-from-palette(
+      map.get($color-config, background),
+      selected-button
+    );
+  }
+}
+
+@mixin theme($theme) {
+  $color-config: mat.get-color-config($theme);
+
+  @if $color-config != null {
+    @include contact-card($color-config);
+  }
+}
