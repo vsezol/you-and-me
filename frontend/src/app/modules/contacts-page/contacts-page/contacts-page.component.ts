@@ -1,13 +1,20 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { map, takeUntil, tap } from 'rxjs/operators';
+import {
+  distinctUntilChanged,
+  filter,
+  map,
+  switchMap,
+  takeUntil,
+  tap,
+} from 'rxjs/operators';
 
 import { UsersService } from '../../users/users.service';
 import { ServerUser } from '../../../common';
 import { LoggerService } from '../../logger/logger.service';
 import { PeerService } from '../../peer/peer.service';
 import { PeerIdService } from '../../peer/peer-id.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { ToolbarService } from '../../../core/services/toolbar.service';
 
 @Component({
@@ -16,6 +23,14 @@ import { ToolbarService } from '../../../core/services/toolbar.service';
   styleUrls: ['./contacts-page.component.scss'],
 })
 export class ContactsPageComponent implements OnInit, OnDestroy {
+  public users!: ServerUser[];
+
+  public activeChatName!: string;
+
+  private destroyed$: Subject<void> = new Subject();
+
+  private currentUser!: ServerUser;
+
   constructor(
     private usersService: UsersService,
     private peerIdService: PeerIdService,
@@ -24,46 +39,15 @@ export class ContactsPageComponent implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
     private toolbarService: ToolbarService
-  ) {}
-
-  private destroyed$: Subject<void> = new Subject();
-
-  private currentUser!: ServerUser;
-
-  public users!: ServerUser[];
-
-  public activeChatName!: Observable<string>;
+  ) {
+    this.subscribeToUrlChanged();
+  }
 
   ngOnInit(): void {
-    this.usersService
-      .getCurrentUser()
-      .pipe(takeUntil(this.destroyed$))
-      .subscribe((user) => {
-        this.currentUser = user;
-      });
+    this.fetchCurrentUser();
+    this.fetchUsers();
 
-    this.usersService
-      .getUsers({ withOutCurrent: true })
-      .pipe(takeUntil(this.destroyed$))
-      .subscribe((users) => {
-        this.users = users;
-      });
-
-    this.peerService.localPeerId$
-      .pipe(takeUntil(this.destroyed$))
-      .subscribe((peerId) => {
-        if (!peerId) return;
-
-        this.peerIdService.addCurrentUserPeerId(peerId).subscribe(() => {
-          this.logUserPeerId(this.currentUser.username, peerId);
-        });
-      });
-
-    this.activeChatName = this.route.firstChild?.params.pipe(
-      takeUntil(this.destroyed$),
-      map((params) => params.username),
-      tap((username) => this.toolbarService.setLabel(username))
-    )!;
+    this.subscribeToLocalPeerIdChanged();
   }
 
   ngOnDestroy() {
@@ -94,5 +78,56 @@ export class ContactsPageComponent implements OnInit, OnDestroy {
     this.loggerService.log('ContactsPage')(
       `user ${username} has peerId ${peerId}`
     );
+  }
+
+  private subscribeToUrlChanged(): void {
+    this.router.events
+      .pipe(
+        takeUntil(this.destroyed$),
+        filter((event) => event instanceof NavigationEnd),
+        map((event) => {
+          return (event as NavigationEnd).url;
+        }),
+        map((url) => {
+          return url.split('/').filter((i) => !!i);
+        }),
+        filter((parts) => parts.length > 1),
+        switchMap(() => this.route.firstChild?.params!),
+        distinctUntilChanged(),
+        map((params) => params.username ?? '')
+      )
+      .subscribe((username) => {
+        this.activeChatName = username;
+        this.toolbarService.setLabel(username);
+      });
+  }
+
+  private fetchCurrentUser(): void {
+    this.usersService
+      .getCurrentUser()
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe((user) => {
+        this.currentUser = user;
+      });
+  }
+
+  private fetchUsers(): void {
+    this.usersService
+      .getUsers({ withOutCurrent: true })
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe((users) => {
+        this.users = users;
+      });
+  }
+
+  private subscribeToLocalPeerIdChanged(): void {
+    this.peerService.localPeerId$
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe((peerId) => {
+        if (!peerId) return;
+        this.peerIdService.addCurrentUserPeerId(peerId).subscribe(() => {
+          this.logUserPeerId(this.currentUser.username, peerId);
+        });
+      });
   }
 }

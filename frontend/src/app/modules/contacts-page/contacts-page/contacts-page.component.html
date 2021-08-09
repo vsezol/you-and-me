@@ -8,7 +8,7 @@
         <app-contact-card
           [username]="user.username"
           (click)="openChat(user)"
-          [isActive]="(activeChatName | async) === user.username"
+          [isActive]="activeChatName === user.username"
         >
         </app-contact-card>
       </div>

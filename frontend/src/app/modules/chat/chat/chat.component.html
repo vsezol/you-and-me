@@ -10,7 +10,7 @@
     </mat-card>
   </div>
 
-  <mat-card fxFlex style="padding: 10px 10px">
+  <mat-card fxFlex class="chat-form-wrapper">
     <form class="chat-form" fxLayout="row" fxLayoutAlign="center center">
       <mat-form-field class="chat-form__control" appearance="outline">
         <textarea
@@ -21,7 +21,7 @@
           placeholder="Write a message..."
         ></textarea>
       </mat-form-field>
-      <button mat-icon-button>
+      <button mat-icon-button fxFlexAlign="end" class="chat-form__submit-btn">
         <mat-icon>send</mat-icon>
       </button>
     </form>
