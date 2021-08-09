@@ -1,5 +1,12 @@
-<div class="contacts" fxLayout="row" fxLayoutGap="5px">
-  <div *ngIf="users && users.length > 0" class="contacts__list" fxFlex="30">
+<div class="contacts" fxLayout="row">
+  <div
+    *ngIf="users && users.length > 0"
+    class="contacts__list"
+    [fxHide.lt-md]="withChat"
+    fxFlex="grow"
+    fxFlex.md="30"
+    fxFlex.lg="20"
+  >
     <cdk-virtual-scroll-viewport itemSize="52" [ngStyle]="{ height: '100%' }">
       <div
         *cdkVirtualFor="let user of users; index as index"
@@ -14,7 +21,8 @@
       </div>
     </cdk-virtual-scroll-viewport>
   </div>
-  <div fxFlex="70">
+
+  <div [fxHide.lt-md]="!withChat" fxFlex.md="70" fxFlex.lg="80">
     <router-outlet></router-outlet>
   </div>
 

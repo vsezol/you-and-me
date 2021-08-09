@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { LayoutModule } from '@angular/cdk/layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AuthPageRoutingModule } from './auth-page-routing.module';
@@ -19,7 +18,6 @@ import { MaterialModule } from '../material/material.module';
     ReactiveFormsModule,
     FormsModule,
 
-    LayoutModule,
     FlexLayoutModule,
 
     MaterialModule,

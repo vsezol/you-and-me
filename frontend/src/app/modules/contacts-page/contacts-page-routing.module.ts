@@ -19,10 +19,16 @@ const routes: Routes = [
           {
             path: '',
             component: VoidChatMessageComponent,
+            data: {
+              withChat: false,
+            },
           },
           {
             path: ':username',
             component: ChatComponent,
+            data: {
+              withChat: true,
+            },
           },
           {
             path: '**',

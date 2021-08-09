@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import {
   distinctUntilChanged,
   filter,
@@ -30,6 +30,8 @@ export class ContactsPageComponent implements OnInit, OnDestroy {
   private destroyed$: Subject<void> = new Subject();
 
   private currentUser!: ServerUser;
+
+  public withChat = false;
 
   constructor(
     private usersService: UsersService,
@@ -90,6 +92,9 @@ export class ContactsPageComponent implements OnInit, OnDestroy {
         }),
         map((url) => {
           return url.split('/').filter((i) => !!i);
+        }),
+        tap((url) => {
+          this.withChat = url.length > 1;
         }),
         filter((parts) => parts.length > 1),
         switchMap(() => this.route.firstChild?.params!),
