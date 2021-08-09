@@ -26,13 +26,31 @@
 
       <mat-nav-list fxFlex="grow">
         <ng-container *ngIf="authService.isAuthenticated(); else nonAuthBlock">
-          <a mat-list-item [routerLink]="['/contacts']"> Contacts </a>
+          <a
+            mat-list-item
+            [routerLink]="['/contacts']"
+            (click)="isOpenedChange.emit(false)"
+          >
+            Contacts
+          </a>
           <a mat-list-item (click)="authService.signOut()"> Sign out </a>
         </ng-container>
 
         <ng-template #nonAuthBlock>
-          <a mat-list-item [routerLink]="['/auth', 'sign-in']"> Sign in </a>
-          <a mat-list-item [routerLink]="['/auth', 'sign-up']"> Sign up </a>
+          <a
+            mat-list-item
+            [routerLink]="['/auth', 'sign-in']"
+            (click)="isOpenedChange.emit(false)"
+          >
+            Sign in
+          </a>
+          <a
+            mat-list-item
+            [routerLink]="['/auth', 'sign-up']"
+            (click)="isOpenedChange.emit(false)"
+          >
+            Sign up
+          </a>
         </ng-template>
       </mat-nav-list>
 
