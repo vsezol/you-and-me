@@ -1,5 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ToolbarService } from 'src/app/core/services/toolbar.service';
+import { PeerIdService } from '../../peer/peer-id.service';
+import { PeerService } from '../../peer/peer.service';
 
 @Component({
   selector: 'app-chat',
@@ -7,7 +9,11 @@ import { ToolbarService } from 'src/app/core/services/toolbar.service';
   styleUrls: ['./chat.component.scss'],
 })
 export class ChatComponent implements OnInit, OnDestroy {
-  constructor(private toolbarService: ToolbarService) {}
+  constructor(
+    private toolbarService: ToolbarService,
+    private peerIdService: PeerIdService,
+    private peerService: PeerService
+  ) {}
 
   ngOnInit(): void {
     this.toolbarService.setActions([

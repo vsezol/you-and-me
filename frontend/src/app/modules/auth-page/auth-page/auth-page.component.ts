@@ -156,5 +156,9 @@ export class AuthPageComponent implements OnInit, OnDestroy {
 
   handleCloseAlert(): void {
     this.error = null;
+
+    const queryParams = { ...this.route.snapshot.queryParams };
+    delete queryParams.errorMessage;
+    this.router.navigate([], { queryParams });
   }
 }
