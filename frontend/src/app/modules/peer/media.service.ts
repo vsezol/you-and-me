@@ -1,13 +1,21 @@
 import { Injectable } from '@angular/core';
 
+export interface MediaConfig {
+  video: boolean;
+  audio: boolean;
+}
+
 @Injectable()
 export class MediaService {
   constructor() {}
 
-  async createUserMediaStream(): Promise<MediaStream> {
+  async createUserMediaStream({
+    video = true,
+    audio = true,
+  }: Partial<MediaConfig> = {}): Promise<MediaStream> {
     const mediaStream = await navigator.mediaDevices.getUserMedia({
-      audio: true,
-      video: true,
+      video,
+      audio,
     });
 
     return mediaStream;

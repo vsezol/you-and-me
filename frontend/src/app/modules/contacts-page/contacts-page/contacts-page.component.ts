@@ -59,21 +59,8 @@ export class ContactsPageComponent implements OnInit, OnDestroy {
   }
 
   public openChat(user: ServerUser): void {
-    this.toolbarService.setLabel(user.username);
+    this.setToolBarLabel(user.username);
     this.router.navigate(['/contacts', user.username]);
-  }
-
-  public onCall(username: string) {
-    this.peerIdService
-      .getPeerIdByUsername(username)
-      .pipe(takeUntil(this.destroyed$))
-      .subscribe(async (peerId) => {
-        this.logUserPeerId(username, peerId);
-
-        await this.peerService.call(peerId, {
-          caller: { name: this.currentUser.username },
-        });
-      });
   }
 
   private logUserPeerId(username: string, peerId: string) {
@@ -102,9 +89,13 @@ export class ContactsPageComponent implements OnInit, OnDestroy {
         map((params) => params.username ?? '')
       )
       .subscribe((username) => {
+        this.setToolBarLabel(username);
         this.activeChatName = username;
-        this.toolbarService.setLabel(username);
       });
+  }
+
+  private setToolBarLabel(username: string): void {
+    this.toolbarService.setLabel(`Chat with ${username}`);
   }
 
   private fetchCurrentUser(): void {

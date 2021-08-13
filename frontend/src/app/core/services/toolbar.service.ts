@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
 interface ToolbarAction {
   icon: string;
@@ -12,6 +12,7 @@ interface ToolbarAction {
 export class ToolbarService {
   private _label = '';
   private _actions: ToolbarAction[] = [];
+  private actions$: Subject<string> = new Subject<string>();
 
   public setActions(actions: ToolbarAction[]): void {
     this._actions = actions;
@@ -23,6 +24,14 @@ export class ToolbarService {
 
   public clearActions(): void {
     this._actions = [];
+  }
+
+  public emitAction(actionName: string): void {
+    this.actions$.next(actionName);
+  }
+
+  public getActionsStream(): Observable<string> {
+    return this.actions$.asObservable();
   }
 
   public setLabel(label: string): void {

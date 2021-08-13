@@ -8,6 +8,7 @@
     *ngFor="let action of toolbarService.getActions()"
     mat-icon-button
     color="primary"
+    (click)="toolbarService.emitAction(action.name)"
   >
     <mat-icon>{{ action.icon }}</mat-icon>
   </button>

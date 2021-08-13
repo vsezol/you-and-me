@@ -6,6 +6,7 @@ import { MaterialModule } from '../material/material.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { VideoChatComponent } from './video-chat/video-chat.component';
 import { ChatComponent } from './chat/chat.component';
+import { ChatModalDirective } from './chat-modal.directive';
 
 @NgModule({
   declarations: [
@@ -13,8 +14,9 @@ import { ChatComponent } from './chat/chat.component';
     VideoComponent,
     GridComponent,
     ChatComponent,
+    ChatModalDirective,
   ],
   imports: [CommonModule, MaterialModule, FlexLayoutModule],
-  exports: [VideoChatComponent, VideoComponent, GridComponent, ChatComponent],
+  exports: [VideoChatComponent, VideoComponent, GridComponent, ChatComponent, ChatModalDirective],
 })
 export class ChatModule {}

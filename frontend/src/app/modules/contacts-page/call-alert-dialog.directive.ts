@@ -2,7 +2,6 @@ import { Directive, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { CallAlertComponent } from './call-alert/call-alert.component';
 import { LoggerService } from '../logger/logger.service';
-import { Router } from '@angular/router';
 import { PeerService } from '../peer/peer.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -16,8 +15,7 @@ export class CallAlertDialogDirective implements OnDestroy {
   constructor(
     private dialog: MatDialog,
     private peerService: PeerService,
-    private loggerService: LoggerService,
-    private router: Router
+    private loggerService: LoggerService
   ) {
     this.peerService.incomingCall$
       .pipe(takeUntil(this.destroyed$))
@@ -38,8 +36,6 @@ export class CallAlertDialogDirective implements OnDestroy {
           if (isAccepted) {
             loggerService.log('ContactsPage')('Call accepted');
             await this.peerService.answer();
-
-            this.router.navigate(['chat']);
           } else {
             loggerService.log('ContactsPage')('Call declined');
             await this.peerService.decline();
