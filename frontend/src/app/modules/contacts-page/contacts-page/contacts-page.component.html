@@ -6,6 +6,8 @@
     fxFlex="grow"
     fxFlex.md="30"
     fxFlex.lg="20"
+    fxFlex.gt-lg="20"
+    [style.margin-right]="withChat ? '10px' : '0px'"
   >
     <cdk-virtual-scroll-viewport itemSize="52" [ngStyle]="{ height: '100%' }">
       <div
@@ -22,7 +24,12 @@
     </cdk-virtual-scroll-viewport>
   </div>
 
-  <div [fxHide.lt-md]="!withChat" fxFlex.md="70" fxFlex.lg="80">
+  <div
+    [fxHide.lt-md]="!withChat"
+    fxFlex.md="70"
+    fxFlex.lg="80"
+    fxFlex.gt-lg="80"
+  >
     <router-outlet></router-outlet>
   </div>
 
