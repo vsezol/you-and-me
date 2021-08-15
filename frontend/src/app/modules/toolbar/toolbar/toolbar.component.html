@@ -2,7 +2,7 @@
   <button mat-icon-button (click)="toggleMenu.emit()">
     <mat-icon>menu</mat-icon>
   </button>
-  <span>{{ toolbarService.getLabel() || 'You&Me' }}</span>
+  <span>{{ toolbarService.getLabel() || appName }}</span>
   <span class="spacer"></span>
   <button
     *ngFor="let action of toolbarService.getActions()"

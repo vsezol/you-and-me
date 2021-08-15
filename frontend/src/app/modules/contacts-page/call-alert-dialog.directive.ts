@@ -1,10 +1,10 @@
 import { Directive, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { CallAlertComponent } from './call-alert/call-alert.component';
-import { LoggerService } from '../logger/logger.service';
-import { PeerService } from '../peer/peer.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
+import { CallAlertComponent } from './call-alert/call-alert.component';
+import { LoggerService, PeerService } from '@modules';
 
 @Directive({
   selector: 'app-call-alert-dialog',

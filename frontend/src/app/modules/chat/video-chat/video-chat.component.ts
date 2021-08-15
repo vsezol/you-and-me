@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { PeerService } from '../../peer/peer.service';
 import { MatDialogRef } from '@angular/material/dialog';
+
+import { PeerService } from '@modules';
 
 @Component({
   selector: 'app-video-chat',

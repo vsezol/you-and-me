@@ -1,13 +1,16 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ToolbarService } from 'src/app/core/services/toolbar.service';
-import { PeerIdService } from '../../peer/peer-id.service';
-import { PeerService } from '../../peer/peer.service';
-import { UsersService } from '../../users/users.service';
-import { ServerUser } from '../../../common';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
-import { LoggerService } from '../../logger/logger.service';
+
+import {
+  LoggerService,
+  PeerIdService,
+  PeerService,
+  UsersService,
+  ToolbarService,
+} from '@modules';
+import { ServerUser } from '@common';
 
 @Component({
   selector: 'app-chat',

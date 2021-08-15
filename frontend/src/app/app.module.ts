@@ -1,20 +1,29 @@
-import { NgModule } from '@angular/core';
+import { InjectionToken, NgModule, Provider } from '@angular/core';
 import { BrowserModule, HammerModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { AppRoutingModule } from './app-routing.module';
-
 import { AppComponent } from './app.component';
-import { MainLayoutComponent } from './core/components/main-layout/main-layout.component';
-import { ThemeSwitcherComponent } from './core/components/theme-switcher/theme-switcher.component';
-import { MaterialModule } from './modules/material/material.module';
-import { PeerModule } from './modules/peer/peer.module';
-import { AuthModule } from './modules/auth/auth.module';
-import { SideNavComponent } from './core/components/side-nav/side-nav.component';
-import { UsersModule } from './modules/users/users.module';
-import { HAMMER_CONFIG_PROVIDER } from './core/hammer.config';
-import { ToolbarComponent } from './core/components/toolbar/toolbar.component';
-import { FlexLayoutModule } from '@angular/flex-layout';
+import {
+  UsersModule,
+  ToolbarModule,
+  PeerModule,
+  AuthModule,
+  MaterialModule,
+} from '@modules';
+import {
+  MainLayoutComponent,
+  ThemeSwitcherComponent,
+  SideNavComponent,
+  HAMMER_CONFIG_PROVIDER,
+} from '@core';
+
+export const APP_NAME = new InjectionToken<string>('AppName');
+const APP_NAME_PROVIDER: Provider = {
+  provide: APP_NAME,
+  useValue: 'You&Me',
+};
 
 @NgModule({
   declarations: [
@@ -22,7 +31,6 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     MainLayoutComponent,
     ThemeSwitcherComponent,
     SideNavComponent,
-    ToolbarComponent,
   ],
   imports: [
     BrowserModule,
@@ -34,8 +42,9 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     UsersModule,
     HammerModule,
     FlexLayoutModule,
+    ToolbarModule,
   ],
-  providers: [HAMMER_CONFIG_PROVIDER],
+  providers: [HAMMER_CONFIG_PROVIDER, APP_NAME_PROVIDER],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

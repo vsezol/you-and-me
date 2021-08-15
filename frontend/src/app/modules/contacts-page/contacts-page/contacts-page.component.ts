@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import {
   distinctUntilChanged,
@@ -9,13 +10,14 @@ import {
   tap,
 } from 'rxjs/operators';
 
-import { UsersService } from '../../users/users.service';
-import { ServerUser } from '../../../common';
-import { LoggerService } from '../../logger/logger.service';
-import { PeerService } from '../../peer/peer.service';
-import { PeerIdService } from '../../peer/peer-id.service';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { ToolbarService } from '../../../core/services/toolbar.service';
+import {
+  UsersService,
+  LoggerService,
+  PeerService,
+  PeerIdService,
+  ToolbarService,
+} from '@modules';
+import { ServerUser } from '@common';
 
 @Component({
   selector: 'app-contacts-page',

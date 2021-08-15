@@ -1,14 +1,12 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 interface ToolbarAction {
   icon: string;
   name: string;
 }
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class ToolbarService {
   private _label = '';
   private _actions: ToolbarAction[] = [];

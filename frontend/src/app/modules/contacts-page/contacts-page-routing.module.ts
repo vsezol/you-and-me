@@ -2,9 +2,10 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 
-import { MainLayoutComponent } from '../../core/components/main-layout/main-layout.component';
+import { MainLayoutComponent } from '@core';
+import { ChatComponent } from '@modules';
+
 import { ContactsPageComponent } from './contacts-page/contacts-page.component';
-import { ChatComponent } from '../chat/chat/chat.component';
 import { VoidChatMessageComponent } from './void-chat-message/void-chat-message.component';
 
 const routes: Routes = [

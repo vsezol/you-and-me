@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 
-import { MainLayoutComponent } from '../../core/components/main-layout/main-layout.component';
+import { MainLayoutComponent } from '@core';
 import { AuthPageComponent } from './auth-page/auth-page.component';
 
 export enum AuthTypeNames {

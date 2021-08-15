@@ -1,8 +1,9 @@
 import { Directive } from '@angular/core';
-import { Subject } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
-import { PeerService } from '../peer/peer.service';
+import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
+import { PeerService } from '@modules';
 import { VideoChatComponent } from './video-chat/video-chat.component';
 
 @Directive({
