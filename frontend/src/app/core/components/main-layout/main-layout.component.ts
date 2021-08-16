@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ThemeService } from '../../services/theme.service';
+import { ThemeService } from '@core';
 
 @Component({
   selector: 'app-main-layout',

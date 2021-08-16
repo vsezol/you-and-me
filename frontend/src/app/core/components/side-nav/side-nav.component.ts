@@ -6,12 +6,12 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { AuthService } from 'src/app/modules/auth/auth.service';
-import { UsersService } from 'src/app/modules/users/users.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { ServerUser } from 'src/app/common';
-import { ThemeService } from '../../services/theme.service';
+
+import { AuthService, UsersService } from '@modules';
+import { ServerUser } from '@common';
+import { ThemeService } from '@core';
 
 @Component({
   selector: 'app-side-nav',

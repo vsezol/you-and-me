@@ -1,15 +1,16 @@
 import { Injectable } from '@angular/core';
-import { environment } from '../../../environments/environment';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Router } from '@angular/router';
 import { catchError, tap } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
+
+import { environment } from '@environments';
 
 import {
   SomethingWentWrongError,
   UnauthorizedError,
-} from '../../common/errors';
-import { CreateUserProps } from '../../common';
-import { Router } from '@angular/router';
+  CreateUserProps,
+} from '@common';
 
 export interface AuthResponse {
   token: string;
