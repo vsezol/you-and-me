@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import Peer, { MediaConnection } from 'peerjs';
 import { BehaviorSubject, ReplaySubject, Subject } from 'rxjs';
 
-import { LoggerService } from '@modules';
 import { ICE_SERVERS } from './contants';
 import { MediaConfig, MediaService } from './media.service';
+import { LoggerService } from '@modules/logger';
 
 interface CallMetadata {
   caller: {

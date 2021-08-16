@@ -11,10 +11,10 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
-import { AuthService, AuthResponse } from '@modules';
 import { CreateUserProps } from '@common';
 import { ValidationErrorsService } from '../validation-errors.service';
 import { AuthTypeNames } from '../auth-page-routing.module';
+import { AuthResponse, AuthService } from '@modules/auth';
 
 enum ControlNames {
   USERNAME = 'username',

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 
 import { MainLayoutComponent } from '@core';
-import { ChatComponent } from '@modules';
+import { ChatComponent } from '@modules/chat';
 
 import { ContactsPageComponent } from './contacts-page/contacts-page.component';
 import { VoidChatMessageComponent } from './void-chat-message/void-chat-message.component';

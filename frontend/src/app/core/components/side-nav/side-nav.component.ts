@@ -9,9 +9,10 @@ import {
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { AuthService, UsersService } from '@modules';
 import { ServerUser } from '@common';
 import { ThemeService } from '@core';
+import { UsersService } from '@modules/users';
+import { AuthService } from '@modules/auth';
 
 @Component({
   selector: 'app-side-nav',

@@ -5,19 +5,18 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import {
-  UsersModule,
-  ToolbarModule,
-  PeerModule,
-  AuthModule,
-  MaterialModule,
-} from '@modules';
+import { UsersModule } from '@modules/users';
+import { ToolbarModule } from '@modules/toolbar';
+import { AuthModule } from '@modules/auth';
+import { PeerModule } from '@modules/peer';
 import {
   MainLayoutComponent,
   ThemeSwitcherComponent,
   SideNavComponent,
   HAMMER_CONFIG_PROVIDER,
 } from '@core';
+import { MaterialModule } from '@modules/material';
+
 
 export const APP_NAME = new InjectionToken<string>('AppName');
 const APP_NAME_PROVIDER: Provider = {

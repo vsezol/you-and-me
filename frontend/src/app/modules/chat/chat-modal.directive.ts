@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { PeerService } from '@modules';
+import { PeerService } from '@modules/peer';
 import { VideoChatComponent } from './video-chat/video-chat.component';
 
 @Directive({

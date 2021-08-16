@@ -10,14 +10,12 @@ import {
   tap,
 } from 'rxjs/operators';
 
-import {
-  UsersService,
-  LoggerService,
-  PeerService,
-  PeerIdService,
-  ToolbarService,
-} from '@modules';
+
 import { ServerUser } from '@common';
+import { PeerIdService, PeerService } from '@modules/peer';
+import { UsersService } from '@modules/users';
+import { LoggerService } from '@modules/logger';
+import { ToolbarService } from '@modules/toolbar';
 
 @Component({
   selector: 'app-contacts-page',

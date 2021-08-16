@@ -3,14 +3,11 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 
-import {
-  LoggerService,
-  PeerIdService,
-  PeerService,
-  UsersService,
-  ToolbarService,
-} from '@modules';
 import { ServerUser } from '@common';
+import { PeerIdService, PeerService } from '@modules/peer';
+import { UsersService } from '@modules/users';
+import { LoggerService } from '@modules/logger';
+import { ToolbarService } from '@modules/toolbar';
 
 @Component({
   selector: 'app-chat',
