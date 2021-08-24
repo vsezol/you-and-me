@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { ToolbarService } from './toolbar.service';
-import { MaterialModule } from '@modules/material/material.module';
+import { MaterialModule } from '@modules/material';
 
 @NgModule({
   declarations: [ToolbarComponent],

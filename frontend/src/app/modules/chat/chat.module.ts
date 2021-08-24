@@ -4,22 +4,29 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { VideoComponent } from './video/video.component';
 import { GridComponent } from './grid/grid.component';
-import { VideoChatComponent } from './video-chat/video-chat.component';
+import { ChatModalInnerComponent } from './chat-modal-inner/chat-modal-inner.component';
 import { ChatComponent } from './chat/chat.component';
 import { ChatModalDirective } from './chat-modal.directive';
 import { MaterialModule } from '@modules/material/material.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
-    VideoChatComponent,
+    ChatModalInnerComponent,
     VideoComponent,
     GridComponent,
     ChatComponent,
     ChatModalDirective,
   ],
-  imports: [CommonModule, MaterialModule, FlexLayoutModule],
+  imports: [
+    CommonModule,
+    MaterialModule,
+    FlexLayoutModule,
+    ReactiveFormsModule,
+    FormsModule,
+  ],
   exports: [
-    VideoChatComponent,
+    ChatModalInnerComponent,
     VideoComponent,
     GridComponent,
     ChatComponent,

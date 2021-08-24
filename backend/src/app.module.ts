@@ -10,6 +10,7 @@ import { PeerController } from './peer/peer.controller';
 
 import { ConfigModule } from '@nestjs/config';
 import { UserModel } from './users/users.model';
+import { SocketModule } from './socket/socket.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { UserModel } from './users/users.model';
       models: [UserModel],
       autoLoadModels: true,
     }),
+    SocketModule,
   ],
   controllers: [AppController, PeerController],
 })

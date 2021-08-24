@@ -8,7 +8,8 @@
     *ngFor="let action of toolbarService.getActions()"
     mat-icon-button
     color="primary"
-    (click)="toolbarService.emitAction(action.name)"
+    [disabled]="action.disabled"
+    (click)="toolbarService.emitAction(action)"
   >
     <mat-icon>{{ action.icon }}</mat-icon>
   </button>

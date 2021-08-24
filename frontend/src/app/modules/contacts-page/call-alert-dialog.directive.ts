@@ -23,7 +23,6 @@ export class CallAlertDialogDirective implements OnDestroy {
     this.peerService.incomingCall$
       .pipe(takeUntil(this.destroyed$))
       .subscribe(async (metadata) => {
-        console.count();
         const callerName = metadata.caller.name;
 
         loggerService.info('ContactsPage')('Incoming call from', callerName);
@@ -35,6 +34,7 @@ export class CallAlertDialogDirective implements OnDestroy {
           data: {
             username: callerName,
           },
+          disableClose: true,
         });
 
         dialogRef.afterClosed().subscribe(async (isAccepted) => {

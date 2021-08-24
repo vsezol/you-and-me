@@ -4,7 +4,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { PeerService } from '@modules/peer';
-import { VideoChatComponent } from './video-chat/video-chat.component';
+import { ChatModalInnerComponent } from './chat-modal-inner/chat-modal-inner.component';
 
 @Directive({
   selector: 'app-chat-modal',
@@ -15,8 +15,8 @@ export class ChatModalDirective {
   constructor(private dialog: MatDialog, private peerService: PeerService) {
     this.peerService.remoteStream$
       .pipe(takeUntil(this.destroyed$))
-      .subscribe((remoteStream) => {
-        const dialogRef = this.dialog.open(VideoChatComponent, {
+      .subscribe(() => {
+        const dialogRef = this.dialog.open(ChatModalInnerComponent, {
           width: '100%',
           minWidth: '100%',
           height: '100vh',

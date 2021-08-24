@@ -16,6 +16,8 @@ import {
   HAMMER_CONFIG_PROVIDER,
 } from '@core';
 import { MaterialModule } from '@modules/material';
+import { SocketModule } from '@modules/socket';
+import { environment } from '@environments';
 
 
 export const APP_NAME = new InjectionToken<string>('AppName');
@@ -42,6 +44,7 @@ const APP_NAME_PROVIDER: Provider = {
     HammerModule,
     FlexLayoutModule,
     ToolbarModule,
+    SocketModule.forRoot(environment.wsUrl),
   ],
   providers: [HAMMER_CONFIG_PROVIDER, APP_NAME_PROVIDER],
   bootstrap: [AppComponent],

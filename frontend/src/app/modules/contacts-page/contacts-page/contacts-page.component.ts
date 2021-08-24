@@ -16,6 +16,7 @@ import { PeerIdService, PeerService } from '@modules/peer';
 import { UsersService } from '@modules/users';
 import { LoggerService } from '@modules/logger';
 import { ToolbarService } from '@modules/toolbar';
+import { SocketService } from '@modules/socket';
 
 @Component({
   selector: 'app-contacts-page',
@@ -40,7 +41,8 @@ export class ContactsPageComponent implements OnInit, OnDestroy {
     private loggerService: LoggerService,
     private router: Router,
     private route: ActivatedRoute,
-    private toolbarService: ToolbarService
+    private toolbarService: ToolbarService,
+    private socketService: SocketService,
   ) {
     this.subscribeToUrlChanged();
   }
@@ -104,6 +106,7 @@ export class ContactsPageComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroyed$))
       .subscribe((user) => {
         this.currentUser = user;
+        this.socketService.registerName(this.currentUser.username);
       });
   }
 

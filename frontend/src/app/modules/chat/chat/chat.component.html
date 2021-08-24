@@ -11,9 +11,16 @@
   </div>
 
   <mat-card fxFlex class="chat-form-wrapper">
-    <form class="chat-form" fxLayout="row" fxLayoutAlign="center center">
+    <form
+      class="chat-form"
+      fxLayout="row"
+      fxLayoutAlign="center center"
+      [formGroup]="form"
+      (ngSubmit)="onSubmit()"
+    >
       <mat-form-field class="chat-form__control" appearance="outline">
         <textarea
+          formControlName="message"
           matInput
           cdkTextareaAutosize
           cdkAutosizeMinRows="1"

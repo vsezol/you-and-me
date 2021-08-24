@@ -1,16 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-
-interface ToolbarAction {
-  icon: string;
-  name: string;
-}
+import { ToolbarAction } from '@modules/toolbar';
 
 @Injectable()
 export class ToolbarService {
   private _label = '';
   private _actions: ToolbarAction[] = [];
-  private actions$: Subject<string> = new Subject<string>();
+  private actions$: Subject<ToolbarAction> = new Subject<ToolbarAction>();
 
   public setActions(actions: ToolbarAction[]): void {
     this._actions = actions;
@@ -24,11 +20,11 @@ export class ToolbarService {
     this._actions = [];
   }
 
-  public emitAction(actionName: string): void {
-    this.actions$.next(actionName);
+  public emitAction(action: ToolbarAction): void {
+    this.actions$.next(action);
   }
 
-  public getActionsStream(): Observable<string> {
+  public getActionsStream(): Observable<ToolbarAction> {
     return this.actions$.asObservable();
   }
 
