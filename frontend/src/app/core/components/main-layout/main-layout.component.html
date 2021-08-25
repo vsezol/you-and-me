@@ -1,0 +1,9 @@
+<div (swipeleft)="closeSideNav()" class="layout">
+  <app-side-nav [(isOpened)]="isShowSideNav">
+    <app-toolbar (toggleMenu)="toggleSideNav()"></app-toolbar>
+
+    <div class="container mat-app-background" (swiperight)="openSideNav()">
+      <router-outlet></router-outlet>
+    </div>
+  </app-side-nav>
+</div>

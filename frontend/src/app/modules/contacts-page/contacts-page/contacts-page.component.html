@@ -1,0 +1,38 @@
+<div class="contacts" fxLayout="row">
+  <div
+    *ngIf="users && users.length > 0"
+    class="contacts__list"
+    [fxHide.lt-md]="withChat"
+    fxFlex="grow"
+    fxFlex.md="30"
+    fxFlex.lg="20"
+    fxFlex.gt-lg="20"
+    [style.margin-right]="withChat ? '10px' : '0px'"
+  >
+    <cdk-virtual-scroll-viewport itemSize="52" [ngStyle]="{ height: '100%' }">
+      <div
+        *cdkVirtualFor="let user of users; index as index"
+        [style.marginBottom]="index + 1 < users.length ? '10px' : '0px'"
+      >
+        <app-contact-card
+          [username]="user.username"
+          (click)="openChat(user)"
+          [isActive]="activeChatName === user.username"
+        >
+        </app-contact-card>
+      </div>
+    </cdk-virtual-scroll-viewport>
+  </div>
+
+  <div
+    [fxHide.lt-md]="!withChat"
+    fxFlex.md="70"
+    fxFlex.lg="80"
+    fxFlex.gt-lg="80"
+  >
+    <router-outlet></router-outlet>
+  </div>
+
+  <app-call-alert-dialog></app-call-alert-dialog>
+  <app-chat-modal></app-chat-modal>
+</div>

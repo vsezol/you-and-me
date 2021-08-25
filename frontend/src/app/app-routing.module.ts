@@ -1,10 +1,33 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-const routes: Routes = [];
+import { AuthGuard } from '@modules/auth';
+
+const routes: Routes = [
+  {
+    path: 'auth',
+    loadChildren: () =>
+      import('./modules/auth-page/auth-page.module').then(
+        (m) => m.AuthPageModule
+      ),
+  },
+  {
+    path: 'contacts',
+    loadChildren: () =>
+      import('./modules/contacts-page/contacts-page.module').then(
+        (m) => m.ContactsPageModule
+      ),
+    canActivate: [AuthGuard],
+  },
+  {
+    path: '',
+    redirectTo: 'contacts',
+    pathMatch: 'full',
+  },
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

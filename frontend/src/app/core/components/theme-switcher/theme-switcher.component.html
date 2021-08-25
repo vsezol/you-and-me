@@ -1,0 +1,6 @@
+<button mat-icon-button (click)="onToggleTheme()">
+  <mat-icon *ngIf="isDark; else content" color="accent">brightness_3</mat-icon>
+  <ng-template #content>
+    <mat-icon color="accent">wb_sunny</mat-icon>
+  </ng-template>
+</button>

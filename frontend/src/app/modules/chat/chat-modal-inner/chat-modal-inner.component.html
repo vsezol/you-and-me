@@ -1,0 +1,21 @@
+<div class="video-chat">
+  <app-grid class="video-chat__wrapper">
+    <div first>
+      <app-video
+        class="video_local"
+        [stream$]="peerService.localStream$"
+      ></app-video>
+    </div>
+    <div second>
+      <app-video
+        class="video_remote"
+        [stream$]="peerService.remoteStream$"
+      ></app-video>
+    </div>
+  </app-grid>
+  <div class="video-chat__actions">
+    <button mat-mini-fab color="warn" (click)="endCall()">
+      <mat-icon> call_end </mat-icon>
+    </button>
+  </div>
+</div>

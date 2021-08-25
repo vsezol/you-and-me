@@ -1,0 +1,24 @@
+.video_local {
+  width: 100%;
+  height: 100%;
+}
+
+.video_remote {
+  width: 100%;
+  height: 100%;
+}
+
+.video-chat {
+  height: 100%;
+
+  &__wrapper {
+    height: 100%;
+  }
+
+  &__actions {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}

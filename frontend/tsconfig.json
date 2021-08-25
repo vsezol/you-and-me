@@ -3,6 +3,16 @@
   "compileOnSave": false,
   "compilerOptions": {
     "baseUrl": "./",
+    "paths": {
+      "@modules/*": ["src/app/modules/*"],
+      "@modules": ["src/app/modules/index.ts"],
+      "@core/*": ["src/app/core/*"],
+      "@core": ["src/app/core/index.ts"],
+      "@common/*": ["src/app/common/*"],
+      "@common": ["src/app/common/index.ts"],
+      "@environments": ["src/environments/index.ts"],
+      "@app/*": ["src/app/*"]
+    },
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
     "strict": true,
@@ -16,10 +26,8 @@
     "importHelpers": true,
     "target": "es2017",
     "module": "es2020",
-    "lib": [
-      "es2018",
-      "dom"
-    ]
+    "allowSyntheticDefaultImports": true,
+    "lib": ["es2018", "dom"]
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

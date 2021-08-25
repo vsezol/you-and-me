@@ -1,0 +1,10 @@
+<mat-card [class]="['alert_' + color, 'mat-elevation-z0']">
+  <div class="mat-h3" style="margin: 0">
+    {{ message }}
+  </div>
+  <div>
+    <button mat-icon-button (click)="close.emit()">
+      <mat-icon class="alert__icon">close</mat-icon>
+    </button>
+  </div>
+</mat-card>

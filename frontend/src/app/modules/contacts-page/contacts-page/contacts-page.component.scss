@@ -1,0 +1,17 @@
+@use '../../../../styles/mixins/scrollbar' as scrollbar;
+
+.contacts {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.contacts__list {
+  height: 100%;
+
+  ::ng-deep
+    .cdk-virtual-scroll-viewport.cdk-virtual-scroll-orientation-vertical {
+    @include scrollbar.scrollbar();
+  }
+}

@@ -1,0 +1,16 @@
+<div
+  class="main-flex"
+  fxFlex
+  fxLayout="row"
+  fxLayout.lt-md="column"
+  fxLayoutAlign.lt-md="center center"
+  fxLayoutGap="10px"
+>
+  <ng-content fxFlex select="[first]"></ng-content>
+  <mat-divider
+    *ngIf="withDivider"
+    fxFlex
+    [vertical]="isMdAndUp | async"
+  ></mat-divider>
+  <ng-content fxFlex select="[second]"></ng-content>
+</div>
