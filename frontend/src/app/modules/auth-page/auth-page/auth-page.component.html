@@ -13,7 +13,7 @@
       *ngIf="!!error"
       [message]="error.message"
       color="warn"
-      (onClose)="handleCloseAlert()"
+      (close)="handleCloseAlert()"
     ></app-alert>
 
     <mat-form-field

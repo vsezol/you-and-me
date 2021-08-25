@@ -3,8 +3,8 @@
     {{ message }}
   </div>
   <div>
-    <button mat-icon-button>
-      <mat-icon class="alert__icon" (click)="onClose.emit()">close</mat-icon>
+    <button mat-icon-button (click)="close.emit()">
+      <mat-icon class="alert__icon">close</mat-icon>
     </button>
   </div>
 </mat-card>

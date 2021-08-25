@@ -11,5 +11,5 @@ export class AlertComponent {
   @Input() message!: string;
   @Input() color: Colors = 'primary';
 
-  @Output() onClose: EventEmitter<void> = new EventEmitter<void>();
+  @Output() close: EventEmitter<void> = new EventEmitter<void>();
 }
