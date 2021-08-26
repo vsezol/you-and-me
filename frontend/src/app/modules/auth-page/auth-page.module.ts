@@ -9,9 +9,10 @@ import { ValidationErrorsService } from './services/validation-errors.service';
 import { AuthSwitcherComponent } from './components/auth-switcher/auth-switcher.component';
 import { AlertComponent } from './components/alert/alert.component';
 import { MaterialModule } from '@modules/material';
+import { AuthFormComponent } from './components/auth-form/auth-form.component';
 
 @NgModule({
-  declarations: [AuthPageComponent, AuthSwitcherComponent, AlertComponent],
+  declarations: [AuthPageComponent, AuthSwitcherComponent, AlertComponent, AuthFormComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,

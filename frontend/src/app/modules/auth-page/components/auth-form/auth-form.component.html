@@ -1,0 +1,74 @@
+<form
+  class="form"
+  [formGroup]="formGroup"
+  #formElement
+  (ngSubmit)="handleSubmit()"
+  (submit)="$event.stopPropagation()"
+>
+  <app-alert
+    *ngIf="!!error"
+    [message]="error.message"
+    color="warn"
+    (close)="handleCloseAlert()"
+  ></app-alert>
+
+  <mat-form-field
+    appearance="outline"
+    class="form__input"
+    [ngStyle]="{ 'margin-top': '20px' }"
+  >
+    <mat-label>Username</mat-label>
+    <input
+      matInput
+      placeholder="Enter your username"
+      formControlName="username"
+    />
+    <mat-error *ngIf="formGroup.get(controlNames.USERNAME)?.invalid">
+      {{ errorMessages?.username }}
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="form__input">
+    <mat-label>Password</mat-label>
+    <input
+      matInput
+      placeholder="Enter your password"
+      [type]="isPasswordVisible ? 'text' : 'password'"
+      formControlName="password"
+    />
+    <mat-error *ngIf="formGroup.get(controlNames.PASSWORD)?.invalid">
+      {{ errorMessages?.password }}
+    </mat-error>
+    <button
+      type="button"
+      mat-icon-button
+      matSuffix
+      (click)="isPasswordVisible = !isPasswordVisible"
+      [attr.aria-label]="'Hide password'"
+      [attr.aria-pressed]="isPasswordVisible"
+    >
+      <mat-icon>
+        {{ isPasswordVisible ? 'visibility' : 'visibility_off' }}
+      </mat-icon>
+    </button>
+  </mat-form-field>
+
+  <button
+    mat-flat-button
+    color="primary"
+    type="submit"
+    class="form__btn"
+    [disabled]="formGroup.invalid || isLoading"
+  >
+    <div class="form__btn-content">
+      <div class="form__btn-text">
+        {{ authInfo$.getValue().isSignIn ? 'Sign in' : 'Sign up' }}
+      </div>
+      <mat-spinner
+        *ngIf="isLoading"
+        [diameter]="20"
+        color="primary"
+      ></mat-spinner>
+    </div>
+  </button>
+</form>

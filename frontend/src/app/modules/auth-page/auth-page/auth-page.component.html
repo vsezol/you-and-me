@@ -3,79 +3,12 @@
     {{ authInfo$.getValue().isSignIn ? 'Authorization' : 'Registration' }}
   </h1>
 
-  <form
-    class="auth-page__form"
-    [formGroup]="formGroup"
-    #formElement
-    (submit)="handleSubmit()"
-  >
-    <app-alert
-      *ngIf="!!error"
-      [message]="error.message"
-      color="warn"
-      (close)="handleCloseAlert()"
-    ></app-alert>
-
-    <mat-form-field
-      appearance="outline"
-      class="auth-page__input"
-      [ngStyle]="{ 'margin-top': '20px' }"
-    >
-      <mat-label>Username</mat-label>
-      <input
-        matInput
-        placeholder="Enter your username"
-        formControlName="username"
-      />
-      <mat-error *ngIf="formGroup.get(controlNames.USERNAME)?.invalid">
-        {{ errorMessages?.username }}
-      </mat-error>
-    </mat-form-field>
-
-    <mat-form-field appearance="outline" class="auth-page__input">
-      <mat-label>Password</mat-label>
-      <input
-        matInput
-        placeholder="Enter your password"
-        [type]="isPasswordVisible ? 'text' : 'password'"
-        formControlName="password"
-      />
-      <mat-error *ngIf="formGroup.get(controlNames.PASSWORD)?.invalid">
-        {{ errorMessages?.password }}
-      </mat-error>
-      <button
-        type="button"
-        mat-icon-button
-        matSuffix
-        (click)="isPasswordVisible = !isPasswordVisible"
-        [attr.aria-label]="'Hide password'"
-        [attr.aria-pressed]="isPasswordVisible"
-      >
-        <mat-icon>
-          {{ isPasswordVisible ? 'visibility' : 'visibility_off' }}
-        </mat-icon>
-      </button>
-    </mat-form-field>
-
-    <button
-      mat-flat-button
-      color="primary"
-      type="submit"
-      class="auth-page__btn"
-      [disabled]="formGroup.invalid || isLoading"
-    >
-      <div class="auth-page__btn-content">
-        <div class="auth-page__btn-text">
-          {{ authInfo$.getValue().isSignIn ? 'Sign in' : 'Sign up' }}
-        </div>
-        <mat-spinner
-          *ngIf="isLoading"
-          [diameter]="20"
-          color="primary"
-        ></mat-spinner>
-      </div>
-    </button>
-  </form>
+  <app-auth-form
+    [error]="error"
+    [authInfo$]="authInfo$"
+    (submit)="handleSubmit($event)"
+    (closeAlert)="handleCloseAlert()"
+  ></app-auth-form>
 
   <app-auth-switcher [authInfo$]="authInfo$"></app-auth-switcher>
 </div>
