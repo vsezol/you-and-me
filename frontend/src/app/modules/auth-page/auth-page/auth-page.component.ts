@@ -12,7 +12,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { CreateUserProps } from '@common';
-import { ValidationErrorsService } from '../validation-errors.service';
+import { ValidationErrorsService } from '../services/validation-errors.service';
 import { AuthTypeNames } from '../auth-page-routing.module';
 import { AuthResponse, AuthService } from '@modules/auth';
 
@@ -142,7 +142,7 @@ export class AuthPageComponent implements OnInit, OnDestroy {
     const { USERNAME, PASSWORD } = ControlNames;
     return {
       [USERNAME]: required(USERNAME),
-      [PASSWORD]: this.validErrors.extractNotVoidErrorMessages([
+      [PASSWORD]: this.validErrors.extractFirstNotVoidErrorMessage([
         required(PASSWORD),
         minLength(PASSWORD),
       ]),

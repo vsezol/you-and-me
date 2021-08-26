@@ -5,8 +5,8 @@ import { FormGroup } from '@angular/forms';
 export class ValidationErrorsService<T extends string> {
   constructor() {}
 
-  public extractNotVoidErrorMessages(messages: string[]): string {
-    return messages.filter((item) => !!item)[0];
+  public extractFirstNotVoidErrorMessage(messages: string[]): string{
+    return messages.filter((item) => !!item)[0] ?? '';
   }
 
   public getRequiredErrorMessage(formGroup: FormGroup, controlName: T): string {
