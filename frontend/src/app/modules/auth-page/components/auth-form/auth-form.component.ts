@@ -2,7 +2,6 @@ import {
   Component,
   EventEmitter,
   Input,
-  OnInit,
   Output,
   ViewChild,
   ElementRef,
@@ -26,7 +25,7 @@ type ErrorMessages = Record<ControlNames, string>;
   templateUrl: './auth-form.component.html',
   styleUrls: ['./auth-form.component.scss'],
 })
-export class AuthFormComponent implements OnInit {
+export class AuthFormComponent {
   @ViewChild('formElement') private formElement!: ElementRef;
 
   @Input() error: Error | null = null;
@@ -63,9 +62,7 @@ export class AuthFormComponent implements OnInit {
     };
   }
 
-  constructor(private validErrors: ValidationErrorsService<ControlNames>) {}
-
-  ngOnInit(): void {
+  constructor(private validErrors: ValidationErrorsService<ControlNames>) {
     this.formGroup = new FormGroup({
       [ControlNames.USERNAME]: new FormControl('', Validators.required),
       [ControlNames.PASSWORD]: new FormControl('', [
