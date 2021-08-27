@@ -36,9 +36,11 @@
       [type]="isPasswordVisible ? 'text' : 'password'"
       formControlName="password"
     />
+
     <mat-error *ngIf="formGroup.get(controlNames.PASSWORD)?.invalid">
       {{ errorMessages?.password }}
     </mat-error>
+
     <button
       type="button"
       mat-icon-button

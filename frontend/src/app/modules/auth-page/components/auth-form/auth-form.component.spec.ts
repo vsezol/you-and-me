@@ -1,3 +1,10 @@
+import {
+  Component,
+  DebugElement,
+  EventEmitter,
+  Input,
+  Output,
+} from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -14,7 +21,6 @@ import { AuthFormComponent, ControlNames } from './auth-form.component';
 import { ValidationErrorsService } from '@modules/auth-page/services/validation-errors.service';
 import { AuthTypeNames } from '@modules/auth-page/auth-page-routing.module';
 import { AuthInfo } from '@modules/auth-page/auth-page/auth-page.component';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-alert',
@@ -30,8 +36,20 @@ class AlertComponentStub {
 describe('AuthFormComponent', () => {
   let component: AuthFormComponent;
   let fixture: ComponentFixture<AuthFormComponent>;
+  let mockValidationErrorsService: jasmine.SpyObj<
+    ValidationErrorsService<ControlNames>
+  >;
 
   beforeEach(async () => {
+    mockValidationErrorsService = jasmine.createSpyObj(
+      'ValidationErrorsService',
+      [
+        'extractFirstNotVoidErrorMessage',
+        'getRequiredErrorMessage',
+        'getMinLengthErrorMessage',
+      ]
+    );
+
     await TestBed.configureTestingModule({
       imports: [
         MatFormFieldModule,
@@ -43,7 +61,12 @@ describe('AuthFormComponent', () => {
         ReactiveFormsModule,
       ],
       declarations: [AuthFormComponent, AlertComponentStub],
-      providers: [ValidationErrorsService],
+      providers: [
+        {
+          provide: ValidationErrorsService,
+          useValue: mockValidationErrorsService,
+        },
+      ],
     }).compileComponents();
   });
 
@@ -69,6 +92,37 @@ describe('AuthFormComponent', () => {
   });
 
   describe('class', () => {
+    describe('errorMessages', () => {
+      beforeEach(() => {
+        mockValidationErrorsService.extractFirstNotVoidErrorMessage.and.callFake(
+          (messages) => {
+            return messages[0];
+          }
+        );
+      });
+
+      it('return errorMessages for each control name if ValidationErrorsService return erros', () => {
+        const FAKE_ERROR_REQUIRED = 'FAKE_ERROR_REQUIRED';
+        mockValidationErrorsService.getRequiredErrorMessage.and.returnValue(
+          FAKE_ERROR_REQUIRED
+        );
+
+        expect(component.errorMessages).toEqual({
+          [ControlNames.USERNAME]: FAKE_ERROR_REQUIRED,
+          [ControlNames.PASSWORD]: FAKE_ERROR_REQUIRED,
+        });
+      });
+
+      it('return void strings for each control if ValidationErrorsService returns void strings', () => {
+        mockValidationErrorsService.getRequiredErrorMessage.and.returnValue('');
+
+        expect(component.errorMessages).toEqual({
+          [ControlNames.USERNAME]: '',
+          [ControlNames.PASSWORD]: '',
+        });
+      });
+    });
+
     describe('handleCloseAlert', () => {
       it('should call closeAlert.emit()', () => {
         let isEmitted = false;
@@ -168,6 +222,43 @@ describe('AuthFormComponent', () => {
           expect(alertElement).toBeFalsy();
         });
       });
+    });
+
+    describe('form', () => {
+      describe('password visibility', () => {
+        let input: DebugElement;
+        let button: DebugElement;
+        let icon: DebugElement;
+
+        beforeEach(() => {
+          const fields = fixture.debugElement.queryAll(
+            By.css('mat-form-field ')
+          );
+
+          const passwordField = fields.find((de) => {
+            return !!de.query(By.css('[formControlName=password]'));
+          }) as DebugElement;
+
+          input = passwordField.query(By.css('input'));
+          button = passwordField.query(By.css('button'));
+          icon = button.query(By.css('mat-icon'));
+        });
+
+        it('pass type password if button icon is visibility_off', () => {
+          expect(input.attributes.type).toBe('password');
+          expect(icon.nativeElement.textContent.trim()).toBe('visibility_off');
+        });
+
+        it('pass type text if button icon is visibility', () => {
+          button.triggerEventHandler('click', null);
+          fixture.detectChanges();
+
+          expect(input.attributes.type).toBe('text');
+          expect(icon.nativeElement.textContent.trim()).toBe('visibility');
+        });
+      });
+
+      describe('submit button', () => {});
     });
   });
 
