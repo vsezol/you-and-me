@@ -23,7 +23,7 @@ import { first } from 'rxjs/operators';
 import { AuthFormComponent, ControlNames } from './auth-form.component';
 import { ValidationErrorsService } from '@modules/auth-page/services/validation-errors.service';
 import { AuthTypeNames } from '@modules/auth-page/auth-page-routing.module';
-import { AuthInfo } from '@modules/auth-page/auth-page/auth-page.component';
+import { AuthInfo } from '@modules/auth-page/components/auth-page/auth-page.component';
 
 @Component({
   selector: 'app-alert',
@@ -36,7 +36,7 @@ class AlertComponentStub {
   @Output() close: EventEmitter<void> = new EventEmitter<void>();
 }
 
-describe('AuthFormComponent', () => {
+describe('[AuthPage] AuthFormComponent', () => {
   let component: AuthFormComponent;
   let fixture: ComponentFixture<AuthFormComponent>;
   let mockValidationErrorsService: jasmine.SpyObj<

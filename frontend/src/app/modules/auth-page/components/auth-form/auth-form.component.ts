@@ -11,7 +11,7 @@ import { CreateUserProps } from '@common';
 import { BehaviorSubject } from 'rxjs';
 
 import { ValidationErrorsService } from '@modules/auth-page/services/validation-errors.service';
-import { AuthInfo } from '@modules/auth-page/auth-page/auth-page.component';
+import { AuthInfo } from '@modules/auth-page/components/auth-page/auth-page.component';
 
 export enum ControlNames {
   USERNAME = 'username',

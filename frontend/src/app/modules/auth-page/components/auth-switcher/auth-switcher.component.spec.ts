@@ -7,9 +7,9 @@ import { BehaviorSubject } from 'rxjs';
 
 import { AuthSwitcherComponent } from './auth-switcher.component';
 import { AuthTypeNames } from '@modules/auth-page/auth-page-routing.module';
-import { AuthInfo } from '@modules/auth-page/auth-page/auth-page.component';
+import { AuthInfo } from "@modules/auth-page/components";
 
-describe('AuthSwitcherComponent', () => {
+describe('[AuthPage] AuthSwitcherComponent', () => {
   let component: AuthSwitcherComponent;
   let fixture: ComponentFixture<AuthSwitcherComponent>;
 
