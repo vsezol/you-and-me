@@ -7,7 +7,10 @@ import {
 } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import {
+  MatProgressSpinnerModule,
+  MatSpinner,
+} from '@angular/material/progress-spinner';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -295,9 +298,33 @@ describe('AuthFormComponent', () => {
               .get(ControlNames.PASSWORD)
               ?.setValue('FAKE_PASSWORD');
           }
+        });
 
-          function setIsLoading(value: boolean): void {
-            component.isLoading = value;
+        describe('spinner', () => {
+          const testCases = [
+            {
+              loading: true,
+              isExists: true,
+              text: 'should be display if loading',
+            },
+            {
+              loading: false,
+              isExists: false,
+              text: 'should not be display if no loading',
+            },
+          ];
+
+          testCases.forEach((test) => {
+            it('should be display if loading', () => {
+              setIsLoading(test.loading);
+              fixture.detectChanges();
+
+              expect(!!getSpinnerDe()).toBe(test.isExists);
+            });
+          });
+
+          function getSpinnerDe() {
+            return buttonDe.query(By.directive(MatSpinner));
           }
         });
 
@@ -338,6 +365,10 @@ describe('AuthFormComponent', () => {
             });
           });
         });
+
+        function setIsLoading(value: boolean): void {
+          component.isLoading = value;
+        }
       });
     });
   });
