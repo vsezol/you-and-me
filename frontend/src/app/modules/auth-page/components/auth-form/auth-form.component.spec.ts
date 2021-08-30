@@ -258,7 +258,87 @@ describe('AuthFormComponent', () => {
         });
       });
 
-      describe('submit button', () => {});
+      describe('submit button', () => {
+        let buttonDe: DebugElement;
+
+        beforeEach(() => {
+          buttonDe = fixture.debugElement.query(By.css('[type="submit"]'));
+        });
+
+        describe('disabled attr', () => {
+          it('should be disabled if form is invalid', () => {
+            expect(buttonDe.attributes.disabled).toBe(true.toString());
+          });
+
+          it('should be enabled if form is valid and no loading', () => {
+            makeFormValid();
+            fixture.detectChanges();
+
+            expect(buttonDe.attributes.disabled ?? 'false').toBe(
+              false.toString()
+            );
+          });
+
+          it('should be disabled if loading', () => {
+            makeFormValid();
+            setIsLoading(true);
+            fixture.detectChanges();
+
+            expect(buttonDe.attributes.disabled).toBe(true.toString());
+          });
+
+          function makeFormValid(): void {
+            component.formGroup
+              .get(ControlNames.USERNAME)
+              ?.setValue('FAKE_USERNAME');
+            component.formGroup
+              .get(ControlNames.PASSWORD)
+              ?.setValue('FAKE_PASSWORD');
+          }
+
+          function setIsLoading(value: boolean): void {
+            component.isLoading = value;
+          }
+        });
+
+        describe('text', () => {
+          const AUTH_INFO_STATES: Readonly<AuthInfo>[] = [
+            {
+              isSignIn: false,
+              isSignUp: true,
+              authType: AuthTypeNames.SIGN_UP,
+            },
+            {
+              isSignIn: true,
+              isSignUp: false,
+              authType: AuthTypeNames.SIGN_IN,
+            },
+          ];
+
+          const testCases = AUTH_INFO_STATES.map((state) => {
+            return {
+              ...state,
+              text: state.isSignIn ? 'Sign in' : 'Sign up',
+            };
+          });
+
+          testCases.forEach((test) => {
+            it(`should display ${test.text} text if user in ${test.authType} page`, () => {
+              component.authInfo$ = new BehaviorSubject<AuthInfo>({
+                isSignIn: test.isSignIn,
+                isSignUp: test.isSignUp,
+                authType: test.authType,
+              });
+
+              fixture.detectChanges();
+
+              expect(
+                buttonDe.nativeElement.textContent.trim().toLowerCase()
+              ).toContain(test.text.toLowerCase());
+            });
+          });
+        });
+      });
     });
   });
 
