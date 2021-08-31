@@ -88,7 +88,6 @@ export class AuthPageComponent implements OnInit, OnDestroy {
         this.router.navigate(['/contacts']);
       },
       (error: Error) => {
-        console.log('submit', error);
         this.error = error;
       }
     );

@@ -113,7 +113,6 @@ describe('[AuthPage] AuthPageComponent', () => {
         password: 'FAKE_PASSWORD',
       };
       let request: Subject<AuthResponse>;
-      let authFormViewChildSpy: jasmine.SpyObj<AuthFormComponentStub>;
 
       beforeEach(() => {
         request = new Subject<AuthResponse>();
@@ -150,7 +149,7 @@ describe('[AuthPage] AuthPageComponent', () => {
         });
       });
 
-      describe('if success request', () => {
+      describe('request', () => {
         let resetFormSpy: jasmine.Spy;
 
         beforeEach(() => {
@@ -159,28 +158,38 @@ describe('[AuthPage] AuthPageComponent', () => {
           fixture.debugElement.componentInstance.authForm = {
             resetForm: resetFormSpy,
           };
+        });
 
-          request.next({
-            expiresIn: 9999,
-            token: 'FAKE_TOKEN',
+        describe('if success', () => {
+          beforeEach(() => {
+            request.next({
+              expiresIn: 9999,
+              token: 'FAKE_TOKEN',
+            });
+          });
+
+          it('should reset form', () => {
+            expect(resetFormSpy).toHaveBeenCalled();
+          });
+
+          it('set error to null', () => {
+            expect(component.error).toBeNull();
+          });
+
+          it('should call router.navigate with ["/contacts"]', () => {
+            expect(mockRouter.navigate).toHaveBeenCalledWith(['/contacts']);
           });
         });
 
-        it('should reset form', () => {
-          expect(resetFormSpy).toHaveBeenCalled();
-        });
+        describe('if error', () => {
+          it('should set error', () => {
+            const ERROR = new Error('FAKE_ERROR');
 
-        it('set error to null', () => {
-          expect(component.error).toBeNull();
-        });
+            request.error(ERROR);
 
-        it('should call router.navigate with ["/contacts"]', () => {
-          expect(mockRouter.navigate).toHaveBeenCalledWith(['/contacts']);
+            expect(component.error?.message).toBe(ERROR.message);
+          });
         });
-      });
-
-      describe('if error request', () => {
-        it('should set error');
       });
     });
 
