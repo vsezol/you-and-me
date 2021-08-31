@@ -6,8 +6,7 @@ import { map, takeUntil } from 'rxjs/operators';
 import { CreateUserProps } from '@common';
 import { AuthResponse, AuthService } from '@modules/auth';
 import { AuthTypeNames } from '../../auth-page-routing.module';
-import { ValidationErrorsService } from '@modules/auth-page/services';
-import { AuthFormComponent, ControlNames } from '@modules/auth-page/components';
+import { AuthFormComponent } from '@modules/auth-page/components';
 
 export interface AuthInfo {
   isSignIn: boolean;
@@ -34,7 +33,6 @@ export class AuthPageComponent implements OnInit, OnDestroy {
   private destroyed$: Subject<void> = new Subject<void>();
 
   constructor(
-    private validErrors: ValidationErrorsService<ControlNames>,
     private authService: AuthService,
     private route: ActivatedRoute,
     private router: Router
@@ -54,11 +52,15 @@ export class AuthPageComponent implements OnInit, OnDestroy {
         map((params) => {
           const authType = params?.authType ?? '';
 
-          return {
-            isSignIn: authType === AuthTypeNames.SIGN_IN,
-            isSignUp: authType === AuthTypeNames.SIGN_UP,
-            authType,
-          };
+          if (authType !== '') {
+            return {
+              isSignIn: authType === AuthTypeNames.SIGN_IN,
+              isSignUp: authType === AuthTypeNames.SIGN_UP,
+              authType,
+            };
+          } else {
+            return this.authInfo$.getValue();
+          }
         }),
         takeUntil(this.destroyed$)
       )
