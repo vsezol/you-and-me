@@ -95,6 +95,17 @@ describe('[AuthPage] AuthFormComponent', () => {
   });
 
   describe('class', () => {
+    describe('resetForm', () => {
+      it('should call formElement.nativeElement.reset', () => {
+        const formDe = fixture.debugElement.query(By.css('form'));
+        const resetSpy = spyOn(formDe.nativeElement, 'reset');
+
+        component.resetForm();
+
+        expect(resetSpy).toHaveBeenCalled();
+      });
+    });
+
     describe('errorMessages', () => {
       beforeEach(() => {
         mockValidationErrorsService.extractFirstNotVoidErrorMessage.and.callFake(

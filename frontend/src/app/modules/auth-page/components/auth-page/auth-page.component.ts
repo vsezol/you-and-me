@@ -28,7 +28,7 @@ export class AuthPageComponent implements OnInit, OnDestroy {
     authType: AuthTypeNames.SIGN_IN,
   });
 
-  @ViewChild(AuthFormComponent) private authForm!: AuthFormComponent;
+  @ViewChild(AuthFormComponent) public authForm!: AuthFormComponent;
 
   private destroyed$: Subject<void> = new Subject<void>();
 

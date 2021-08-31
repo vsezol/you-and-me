@@ -1,11 +1,16 @@
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { BehaviorSubject } from 'rxjs';
+import {
+  ComponentFixture,
+  fakeAsync,
+  TestBed,
+  tick,
+} from '@angular/core/testing';
+import { BehaviorSubject, Subject } from 'rxjs';
 
 import { AuthInfo, AuthPageComponent } from '@modules/auth-page/components';
 import { CreateUserProps } from '@common';
-import { AuthService } from '@modules/auth';
+import { AuthResponse, AuthService } from '@modules/auth';
 import { AuthTypeNames } from '@modules/auth-page/auth-page-routing.module';
 
 describe('[AuthPage] AuthPageComponent', () => {
@@ -103,13 +108,75 @@ describe('[AuthPage] AuthPageComponent', () => {
     });
 
     describe('handleSubmit', () => {
-      it('should call authService.signIn if user in SIGN_IN page');
-      it('should call authService.signUp if user in SIGN_UP page');
+      const FAKE_USER = {
+        username: 'FAKE_USERNAME',
+        password: 'FAKE_PASSWORD',
+      };
+      let request: Subject<AuthResponse>;
+      let authFormViewChildSpy: jasmine.SpyObj<AuthFormComponentStub>;
+
+      beforeEach(() => {
+        request = new Subject<AuthResponse>();
+        mockAuthService.signIn.and.returnValue(request);
+        mockAuthService.signUp.and.returnValue(request);
+      });
+
+      const testCases: (AuthInfo & { methodName: 'signUp' | 'signIn' })[] = [
+        {
+          authType: AuthTypeNames.SIGN_UP,
+          isSignIn: false,
+          isSignUp: true,
+          methodName: 'signUp',
+        },
+        {
+          authType: AuthTypeNames.SIGN_IN,
+          isSignIn: true,
+          isSignUp: false,
+          methodName: 'signIn',
+        },
+      ];
+
+      testCases.forEach((test) => {
+        it('should call authService.signIn if user in SIGN_IN page', () => {
+          component.authInfo$.next({
+            isSignUp: test.isSignUp,
+            isSignIn: test.isSignIn,
+            authType: test.authType,
+          });
+
+          component.handleSubmit(FAKE_USER);
+
+          expect(mockAuthService[test.methodName]).toHaveBeenCalled();
+        });
+      });
 
       describe('if success request', () => {
-        it('should reset form');
-        it('set error to null');
-        it('should call router.navigate with ["contacts"]');
+        let resetFormSpy: jasmine.Spy;
+
+        beforeEach(() => {
+          component.handleSubmit(FAKE_USER);
+          resetFormSpy = jasmine.createSpy();
+          fixture.debugElement.componentInstance.authForm = {
+            resetForm: resetFormSpy,
+          };
+
+          request.next({
+            expiresIn: 9999,
+            token: 'FAKE_TOKEN',
+          });
+        });
+
+        it('should reset form', () => {
+          expect(resetFormSpy).toHaveBeenCalled();
+        });
+
+        it('set error to null', () => {
+          expect(component.error).toBeNull();
+        });
+
+        it('should call router.navigate with ["/contacts"]', () => {
+          expect(mockRouter.navigate).toHaveBeenCalledWith(['/contacts']);
+        });
       });
 
       describe('if error request', () => {
@@ -152,6 +219,8 @@ class AuthFormComponentStub {
 
   @Output() submit = new EventEmitter<CreateUserProps>();
   @Output() closeAlert = new EventEmitter<void>();
+
+  public resetForm(): void {}
 }
 
 @Component({
