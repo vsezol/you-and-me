@@ -1,0 +1,14 @@
+<div class="auth-page">
+  <h1 class="mat-h2">
+    {{ authInfo$.getValue().isSignIn ? 'Authorization' : 'Registration' }}
+  </h1>
+
+  <app-auth-form
+    [error]="error"
+    [authInfo$]="authInfo$"
+    (submit)="handleSubmit($event)"
+    (closeAlert)="handleCloseAlert()"
+  ></app-auth-form>
+
+  <app-auth-switcher [authInfo$]="authInfo$"></app-auth-switcher>
+</div>

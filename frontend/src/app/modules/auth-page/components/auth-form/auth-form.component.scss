@@ -1,15 +1,7 @@
-.auth-page {
-  margin-top: 100px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  &__form {
-    padding: 10px;
-    box-sizing: border-box;
-    max-width: 500px;
-  }
+.form {
+  padding: 10px;
+  box-sizing: border-box;
+  max-width: 500px;
 
   &__input {
     width: 100%;
