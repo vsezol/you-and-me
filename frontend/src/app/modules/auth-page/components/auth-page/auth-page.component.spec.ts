@@ -3,10 +3,15 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BehaviorSubject, Subject } from 'rxjs';
 
-import { AuthInfo, AuthPageComponent } from '@modules/auth-page/components';
+import {
+  AuthInfo,
+  AuthPageComponent,
+  AuthSwitcherComponent,
+} from '@modules/auth-page/components';
 import { CreateUserProps } from '@common';
 import { AuthResponse, AuthService } from '@modules/auth';
 import { AuthTypeNames } from '@modules/auth-page/auth-page-routing.module';
+import { By } from '@angular/platform-browser';
 
 describe('[AuthPage] AuthPageComponent', () => {
   let component: AuthPageComponent;
@@ -17,6 +22,19 @@ describe('[AuthPage] AuthPageComponent', () => {
 
   let mockQueryParams: BehaviorSubject<Params>;
   let mockParams: BehaviorSubject<Params>;
+
+  const AUTH_STATES: AuthInfo[] = [
+    {
+      authType: AuthTypeNames.SIGN_UP,
+      isSignIn: false,
+      isSignUp: true,
+    },
+    {
+      authType: AuthTypeNames.SIGN_IN,
+      isSignIn: true,
+      isSignUp: false,
+    },
+  ];
 
   beforeEach(() => {
     mockAuthService = jasmine.createSpyObj<AuthService>('AuthService', [
@@ -120,28 +138,17 @@ describe('[AuthPage] AuthPageComponent', () => {
         mockAuthService.signUp.and.returnValue(request);
       });
 
-      const testCases: (AuthInfo & { methodName: 'signUp' | 'signIn' })[] = [
-        {
-          authType: AuthTypeNames.SIGN_UP,
-          isSignIn: false,
-          isSignUp: true,
-          methodName: 'signUp',
-        },
-        {
-          authType: AuthTypeNames.SIGN_IN,
-          isSignIn: true,
-          isSignUp: false,
-          methodName: 'signIn',
-        },
-      ];
+      const testCases: (AuthInfo & { methodName: 'signUp' | 'signIn' })[] =
+        AUTH_STATES.map((item) => {
+          return {
+            ...item,
+            methodName: item.isSignIn ? 'signIn' : 'signUp',
+          };
+        });
 
       testCases.forEach((test) => {
         it('should call authService.signIn if user in SIGN_IN page', () => {
-          component.authInfo$.next({
-            isSignUp: test.isSignUp,
-            isSignIn: test.isSignIn,
-            authType: test.authType,
-          });
+          setAuthInfo$(test);
 
           component.handleSubmit(FAKE_USER);
 
@@ -228,20 +235,101 @@ describe('[AuthPage] AuthPageComponent', () => {
 
   describe('template', () => {
     describe('title', () => {
-      it('should show Authorization text if user in SIGN_IN page');
-      it('should show Registration text if user in SIGN_UP page');
+      const testCases: (AuthInfo & { title: string })[] = AUTH_STATES.map(
+        (item) => {
+          return {
+            ...item,
+            title: item.isSignIn ? 'Authorization' : 'Registration',
+          };
+        }
+      );
+
+      testCases.forEach((test) => {
+        it(`should show ${test.title} text if user in ${test.authType} page`, () => {
+          setAuthInfo$(test);
+
+          fixture.detectChanges();
+
+          expect(fixture.debugElement.nativeElement.textContent).toContain(
+            test.title
+          );
+        });
+      });
     });
 
     describe('auth-form', () => {
-      it('should pass right inputs');
-      it('should call handleSubmit($event) when submit emits');
-      it('should call handleCloseAlert() when closeAlert emits');
+      let authFormComponent: AuthFormComponentStub;
+
+      beforeEach(() => {
+        authFormComponent = fixture.debugElement.query(
+          By.directive(AuthFormComponentStub)
+        ).componentInstance;
+      });
+
+      it('should pass right inputs', () => {
+        const FAKE_ERROR = new Error('FAKE_ERROR_MESSAGE');
+
+        component.error = FAKE_ERROR;
+        setAuthInfo$({
+          authType: AuthTypeNames.SIGN_UP,
+          isSignIn: false,
+          isSignUp: false,
+        });
+        fixture.detectChanges();
+
+        expect(authFormComponent.authInfo$).toEqual(component.authInfo$);
+        expect(authFormComponent.error).toEqual(FAKE_ERROR);
+      });
+
+      it('should call handleSubmit($event) when submit emits', () => {
+        const spyHandleSubmit = spyOn(component, 'handleSubmit').and.stub();
+        const FAKE_EVENT: CreateUserProps = {
+          password: 'FAKE_PASSWORD',
+          username: 'FAKE_USERNAME',
+        };
+
+        authFormComponent.submit.emit(FAKE_EVENT);
+
+        expect(spyHandleSubmit).toHaveBeenCalledWith(FAKE_EVENT);
+      });
+
+      it('should call handleCloseAlert() when closeAlert emits', () => {
+        const spyHandleCloseAlert = spyOn(
+          component,
+          'handleCloseAlert'
+        ).and.stub();
+
+        authFormComponent.closeAlert.emit();
+
+        expect(spyHandleCloseAlert).toHaveBeenCalled();
+      });
     });
 
     describe('auth-switcher', () => {
-      it('should pass right inputs');
+      it('should pass right inputs', () => {
+        const authSwitcherComponent = fixture.debugElement.query(
+          By.directive(AuthSwitcherComponentStub)
+        ).componentInstance;
+
+        setAuthInfo$({
+          authType: AuthTypeNames.SIGN_UP,
+          isSignIn: false,
+          isSignUp: false,
+        });
+        fixture.detectChanges();
+
+        expect(authSwitcherComponent.authInfo$).toEqual(component.authInfo$);
+      });
     });
   });
+
+  function setAuthInfo$(info: AuthInfo) {
+    component.authInfo$.next({
+      isSignUp: info.isSignUp,
+      isSignIn: info.isSignIn,
+      authType: info.authType,
+    });
+  }
 });
 
 @Component({
