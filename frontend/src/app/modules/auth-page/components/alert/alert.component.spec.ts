@@ -7,7 +7,7 @@ import { first } from 'rxjs/operators';
 
 import { AlertComponent } from './alert.component';
 
-describe('AlertComponent', () => {
+describe('[AuthPage] AlertComponent', () => {
   let component: AlertComponent;
   let fixture: ComponentFixture<AlertComponent>;
 

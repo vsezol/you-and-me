@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 
 import { AuthTypeNames } from '../../auth-page-routing.module';
-import { AuthInfo } from '../../auth-page/auth-page.component';
+import { AuthInfo } from '../auth-page/auth-page.component';
 
 @Component({
   selector: 'app-auth-switcher',
