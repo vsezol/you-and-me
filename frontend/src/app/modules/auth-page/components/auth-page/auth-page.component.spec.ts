@@ -1,11 +1,6 @@
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import {
-  ComponentFixture,
-  fakeAsync,
-  TestBed,
-  tick,
-} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BehaviorSubject, Subject } from 'rxjs';
 
 import { AuthInfo, AuthPageComponent } from '@modules/auth-page/components';
@@ -48,6 +43,11 @@ describe('[AuthPage] AuthPageComponent', () => {
           useValue: {
             queryParams: mockQueryParams,
             params: mockParams,
+            snapshot: {
+              get queryParams() {
+                return mockQueryParams.getValue();
+              },
+            },
           },
         },
         {
@@ -194,8 +194,35 @@ describe('[AuthPage] AuthPageComponent', () => {
     });
 
     describe('handleCloseAlert', () => {
-      it('should set error to null');
-      it('should call router.navigate without errorMessage query parameter');
+      it('should set error to null', () => {
+        component.error = new Error('FAKE_ERROR');
+
+        fixture.detectChanges();
+        component.handleCloseAlert();
+
+        expect(component.error).toBeNull();
+      });
+
+      it('should call router.navigate without errorMessage query parameter', () => {
+        const FAKE_ERROR_MESSAGE = 'FAKE_ERROR_MESSAGE';
+        const NOT_DELETED_MESSAGE = 'NOT_DELETED_MESSAGE';
+        mockQueryParams.next({
+          errorMessage: FAKE_ERROR_MESSAGE,
+          NOT_DELETED_MESSAGE,
+        });
+        fixture.detectChanges();
+
+        component.handleCloseAlert();
+
+        expect(mockRouter.navigate).toHaveBeenCalledWith(
+          jasmine.anything(),
+          jasmine.objectContaining({
+            queryParams: {
+              NOT_DELETED_MESSAGE,
+            },
+          })
+        );
+      });
     });
   });
 
